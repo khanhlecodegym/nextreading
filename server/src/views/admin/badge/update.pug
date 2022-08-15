@@ -1,0 +1,95 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+
+  form(method="POST", action=`${entity}/${data.id ? 'update' : 'create'}`)
+    .row
+      .col
+        .form-group
+          label(for="id") ID
+          input(
+            id="id",
+            name="id",
+            type="text",
+            value=data.id,
+            class="form-control",
+            readonly
+          )
+
+        .form-group
+          label(for="name") Name
+          input(
+            id="name",
+            name="name",
+            type="text",
+            value=data.name,
+            class="form-control",
+            placeholder="Name"
+          )
+
+      .col
+        .form-group.col-6
+          label Type
+          .dropdown
+            button(
+              class="btn btn-secondary dropdown-toggle",
+              type="button",
+              id="ddType",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false"
+            )
+              - var currentType = badgeTypes.find(type => type.value === data.type)
+              | #{`${currentType ? currentType.text : 'Select Badge Type'}`}
+            div(id="ddType-menu", class="dropdown-menu", aria-labelledby="ddType")
+              each item in badgeTypes
+                button(
+                  class="dropdown-item btn-select"
+                  data-value= item.value,
+                  type="button",
+                  data-target="type"
+                 )= item.text
+          input(
+            id="type",
+            name="type",
+            type="hidden",
+            value= data.type,
+            class="form-control",
+            placeholder="Badge Type"
+          )
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts
+  script(type="text/javascript").
+    $(document).ready(function() {
+      $("#ddType-menu").on("click", ".btn-select", function() {
+        var dataTarget = $(this).data("target");
+        var displayId = $(this).parent().attr('aria-labelledby');
+        var typeName = $(this).text();
+
+        $("#" + dataTarget).val($(this).data("value"));
+        $("#" + displayId).html(typeName);
+      });
+    });

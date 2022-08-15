@@ -1,0 +1,62 @@
+.book-action.card.card-full.text-small.mb20
+  -if (user && user.id)
+    -var isInCurrentReading = user.currentReading.indexOf(_id) !== -1
+    -var isInWantToRead = user.wantToRead.indexOf(_id) !== -1
+
+    //- Write Review
+    div(
+      class="btn btn-action book-action-review book-action-section border-btm",
+      data-name="modal",
+      data-id="modalReview",
+    )
+      p Write review
+
+    //- Current Reading
+    div(
+      class="btn btn-action book-action-section border-btm",
+      data-name="toggle",
+      data-value="reading",
+      data-id= _id,
+      data-adding= `${isInCurrentReading ? 0 : 1}`
+    )
+      - if (isInCurrentReading)
+        p Remove from currently reading
+      - else
+        p Add to currently reading
+
+    //- Want To Read
+    div(
+      class="btn btn-action book-action-section border-btm",
+      data-name="toggle",
+      data-value="want-to-read",
+      data-id= _id,
+      data-adding= `${isInWantToRead ? 0 : 1}`
+    )
+      - if (isInWantToRead)
+        p Remove from want to read
+      - else
+        p Add to want to read
+
+    +ratingActionTemplate(_id)
+
+  - else
+    .card-body.border-btm
+      p Log in to rate and review this book
+  .card-body
+    .flex.flex-center
+      | Share:&nbsp;
+      .icon-social
+        a(
+          href= `https://www.facebook.com/sharer/sharer.php?u=${metaCanonical}`,
+          title= `Share to Facebook`,
+          target="_blank",
+          rel="nofollow",
+        )
+          +imageTemplate('/img/logo-fb.svg', 'icon-menu', 'Facebook', '32', '32', isAmp)
+        a(
+          href= `https://twitter.com/intent/tweet/?url=${metaCanonical}&text=${title}${authorId ? authorId.name: ''}`,
+          title= `Share to Twitter`,
+          target="_blank",
+          rel="nofollow",
+        )
+          +imageTemplate('/img/logo-tw.svg', 'icon-menu', 'Twitter', '32', '32', isAmp)

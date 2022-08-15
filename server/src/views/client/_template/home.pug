@@ -1,0 +1,79 @@
+mixin homeTemplate(isAmp=false)
+  //- Fixed data for Homepage
+  -var popBooks = []
+  - popBooks.push({ title: 'Em Xấu Vừa Đúng Kiểu Anh Thích', slug: 'em-xau-vua-dung-kieu-anh-thich', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/5ffd79dcfc96c07be7a3a712.jpg' })
+  - popBooks.push({ title: 'Yêu Anh Đậm Sâu, Yêu Em Dài Lâu', slug: 'yeu-anh-dam-sau-yeu-em-dai-lau', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/603b18b5bf055c1922bd23e2.jpg' })
+  - popBooks.push({ title: 'EQ Vô Cực', slug: 'eq-vo-cuc', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/5ff7dd71fc96c07be7a3a6e3.jpg' })
+  - popBooks.push({ title: '999 Lá Thư Gửi Cho Chính Mình', slug: '999-la-thu-gui-cho-chinh-minh', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/60600a3dfa70976926997679.jpg' })
+  - popBooks.push({ title: 'Phụ Nữ Hiểu Biết Sẽ Có Cuộc Sống Đẳng Cấp Hơn', slug: 'phu-nu-hieu-biet-se-co-cuoc-song-dang-cap-hon', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/604f7d37fa70976926997663.jpg' })
+  - popBooks.push({ title: 'Ước Mơ Không Phụ Lòng Những Người Nỗ Lực', slug: 'uoc-mo-khong-phu-long-nhung-nguoi-no-luc', img: 'https://s3.ap-southeast-1.amazonaws.com/nextreading.com/book/602fe35377e1257e4cf53dc2.jpg' })
+
+  .home
+    .home-cover
+      .container
+        h1.heading.heading-extra Share your life in book
+        p.home-cover-desc Enter a book you like and read reviews<br />from other Book lovers
+
+        +searchInputTemplate()
+
+      .home-hero.home-hero-left
+      .home-hero.home-hero-right
+
+    .home-section-placeholder
+
+    section.home-section
+      .container.text-center
+        h2.heading.heading-page Popular on NextReading
+        .list-book.list-book-user
+          each item in popBooks
+            a(href=`/book/${item.slug}`, title= item.title)
+              +imageTemplate(
+                `${item.img || defaultBookImg}`,
+                'img img-list', item.title, '160', '240', isAmp,
+              )
+
+    section.home-section
+      .container.text-center
+        h2.heading.heading-page For readers, by readers
+        p.home-cover-desc
+          | Next Reading is an open community for anyone that reads.<br />
+          | We help you get true reviews and rating from other Book lovers<br />
+          | around the world.
+        .flex.flex-between.home-flex-mobile
+          .card.home-card
+            +imageTemplate(
+              '/img/rating.svg',
+              'home-card-img flip',
+              'Rating book',
+              "300",
+              "200",
+              isAmp,
+              "responsive"
+            )
+            p Rating books you've read
+          .card.home-card
+            +imageTemplate(
+              '/img/reviewed-docs.svg',
+              'home-card-img',
+              'Rating book',
+              "300",
+              "156",
+              isAmp,
+              "responsive"
+            )
+            p Tell your feeling
+          .card.home-card
+            +imageTemplate(
+              '/img/portfolio.svg',
+              'home-card-img',
+              'Rating book',
+              "300",
+              "218",
+              isAmp,
+              "responsive"
+            )
+            p Build your portfolio
+
+        //- p Tell your feeling books you've read.
+        //- p Save those you want to read.
+        //- p Track books you've read.

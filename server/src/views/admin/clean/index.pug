@@ -1,0 +1,41 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+
+  .row
+    .col-3
+      .card
+        .card-body
+          h5.card-title Affiliate
+          p.card-text Remove empty Affiliate book generate
+          a(href="/admin/clean/affiliate", class="btn btn-warning mr-2") Run
+
+    .col-3
+      .card
+        .card-body
+          h5.card-title Category
+          p.card-text Update new data for Category
+          a(href="/admin/clean/category", class="btn btn-warning mr-2") Run
+
+    .col-3
+      .card
+        .card-body
+          h5.card-title Username
+          p.card-text Force lowercase and remove special chars on username for all users
+          a(href="/admin/clean/username", class="btn btn-warning mr-2") Run
+
+    .col-3
+      .card
+        .card-body
+          h5.card-title Review
+          p.card-text Update Review counting and set default Score
+          a(href="/admin/clean/review", class="btn btn-warning mr-2 disabled") Run
+
+    .col-3
+      .card
+        .card-body
+          h5.card-title Vote
+          p.card-text - Remove Vote has reviewId but no Review content
+          p.card-text - Remove Vote with empty reviewId
+          a(href="/admin/clean/vote", class="btn btn-warning mr-2 disabled") Run

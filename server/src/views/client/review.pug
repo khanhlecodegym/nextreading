@@ -1,0 +1,16 @@
+extends _default/base.pug
+
+block metadata
+  - var metaPageTitle = seoTitle
+  - var metaPageDesc = seoDesc
+  - var metaContentType = "article"
+  - var metaPageImage = img
+  - var metaCanonical = `${BASE_URL}/review/${reviewCounting}/${bookSlug}`
+  - var metaAMPLink = `${BASE_URL}/amp/review/${reviewCounting}/${bookSlug}`
+
+block schemaMarkup
+  include _schema/schema-review.pug
+
+block main
+  include _template/review.pug
+  +reviewDetailTemplate(false)

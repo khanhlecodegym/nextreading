@@ -1,0 +1,31 @@
+:root {
+  // Common colors use for both mode
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$primary-light-color};
+  --success-color: #{$success-color};
+  --error-color: #{$error-color};
+  --warning-color: #{$warning-color};
+  --link-color: #{$link-color};
+
+  --body-bg-color: #{$body-bg-color};
+  --text-color: #{$text-color};
+  --text-color-revert: #{$text-color-revert};
+  --text-secondary-color: #{$text-secondary-color};
+  --section-bg-color: #{$section-bg-color};
+  --modal-bg-color: #{$modal-bg-color};
+  --divider-color: #{$divider-color};
+  --shadow-color: #{$shadow-color};
+  --quote-bg-color: #{$body-bg-color};
+}
+
+.dark:root {
+  --body-bg-color: #{$body-bg-color-dark};
+  --text-color: #{$text-color-dark};
+  --text-color-revert: #{$text-color-revert-dark};
+  --text-secondary-color: #{$text-secondary-color-dark};
+  --section-bg-color: #{$section-bg-color-dark};
+  --modal-bg-color: #{$modal-bg-color-dark};
+  --divider-color: #{$divider-color-dark};
+  --shadow-color: #{$shadow-color-dark};
+  --quote-bg-color: #{$body-bg-color-dark};
+}

@@ -1,0 +1,140 @@
+script(type='text/javascript').
+  var SEO_TITLE_MIN = 30;
+  var SEO_TITLE_MAX = 60;
+  var SEO_DESC_MIN = 64;
+  var SEO_DESC_MAX = 154;
+
+  // SEO validation
+  function seoInputValidation(elementId, min, max) {
+    if (!$(elementId).length) {
+      return;
+    }
+
+    var textLength = $(elementId).val().length;
+
+    // Reset
+    $(elementId).removeClass('is-invalid').removeClass('is-valid');
+
+    if (min <= textLength && textLength <= max) {
+      $(elementId).addClass('is-valid');
+    } else {
+      $(elementId).addClass('is-invalid');
+    }
+  };
+
+  // Check on init
+  function initValidation() {
+    seoInputValidation('#seoTitle', SEO_TITLE_MIN, SEO_TITLE_MAX);
+    seoInputValidation('#seoDesc', SEO_DESC_MIN, SEO_DESC_MAX);
+  };
+
+  //- If element exists: Check valid by value length
+  //- Else: Bypass validation
+  function validateElement(elID) {
+    var elExists = $(elID).length;
+    var elValid = true;
+
+    if (elExists) {
+      elValid = $(elID).val().length;
+
+      if (!elValid) {
+        $(elID).addClass('is-invalid');
+      } else {
+        $(elID).removeClass('is-invalid');
+      }
+    }
+
+    return !!elValid;
+  };
+
+  function validateDuplicatedSlug(elementId) {
+    if (!$(elementId).length) {
+      return;
+    }
+
+    var apiUrl = 'api/check-duplicate';
+    var slug = $(elementId).val();
+    var type = 'book';
+
+    $.post(
+      apiUrl,
+      { slug: slug, type: type },
+      function (response) {
+        var duplicated = response['duplicated'];
+        console.log('duplicated: ', duplicated);
+
+        if (duplicated) {
+          $(elementId).addClass('is-invalid').removeClass('is-valid');
+          alert('Duplicated slug: ' + slug);
+        } else {
+          $(elementId).removeClass('is-invalid').addClass('is-valid');
+        }
+      }
+    )
+    .fail(function() {
+      displayToast(false, 'Validating duplicate error!!!');
+    });
+  };
+
+  $(document).ready(function() {
+    initValidation();
+
+    // Checking content length for SEO Title and Description tag
+    $('form').on('keyup', '#seoTitle', function() {
+      seoInputValidation('#seoTitle', SEO_TITLE_MIN, SEO_TITLE_MAX);
+    });
+    $('form').on('keyup', '#seoDesc', function() {
+      seoInputValidation('#seoDesc', SEO_DESC_MIN, SEO_DESC_MAX);
+    });
+
+    // Name or Slug change will validate entity duplicated or not
+    $('body').on('change', '#slug', function() {
+      validateDuplicatedSlug('#slug');
+    });
+    $('body').on('change', '#title', function() {
+      validateDuplicatedSlug('#slug');
+    });
+    $('body').on('change', '#name', function() {
+      validateDuplicatedSlug('#slug');
+    });
+
+    $('.form-update').submit(function() {
+      var formId = $(this).attr('id');
+      var formValidation = true;
+
+      //- Common fields
+      var nameValid = validateElement('#name');
+      var titleValid = validateElement('#title');
+      var slugValid = validateElement('#slug');
+      var commonFieldsValid = nameValid && slugValid && titleValid;
+
+      if (formId === 'bookForm') {
+        var categoryValid = $('#list-category').children().length;
+
+        if (categoryValid) {
+          $('#categories').removeClass('text-danger');
+        } else {
+          $('#categories').addClass('text-danger');
+        }
+
+        formValidation = !!categoryValid;
+      }
+
+      if (formId === 'reviewForm') {
+        var editorElID = '#editor-container';
+        var bookNameValid = validateElement('#bookName');
+        var userEmailValid = validateElement('#userEmail');
+        var contentValid = !!$(editorElID).text().length;
+
+        if (contentValid) {
+          $(editorElID).removeClass('border').removeClass('border-danger');
+        } else {
+          $(editorElID).addClass('border').addClass('border-danger');
+        }
+
+        formValidation = bookNameValid && userEmailValid && contentValid;
+      }
+
+      return commonFieldsValid && formValidation;
+    });
+  });

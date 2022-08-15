@@ -1,0 +1,23 @@
+script(type="application/ld+json").
+  {
+    "@context": "http://schema.org",
+    "@type": "Book",
+    "name": "#{title}",
+    "bookFormat": "http://schema.org/Paperback",
+    "image": "#{metaPageImage}",
+    "numberOfPages": "#{numberOfPages || 120}",
+    "inLanguage": "#{language || 'English'}",
+    "isbn": "#{isbn}",
+    "datePublished": "#{datePublished}",
+    "author": {
+      "@type": "Person",
+      "name": "#{authorId.name}",
+      "url": "#{BASE_URL}/author/#{authorId.slug}"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "#{ratingAVG || 3.6}",
+      "ratingCount": "#{ratingCount || 54 }",
+      "reviewCount": "#{reviewCount || 54 }"
+    }
+  }

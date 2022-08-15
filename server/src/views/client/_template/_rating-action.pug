@@ -1,0 +1,41 @@
+mixin ratingActionTemplate(bookId, isModal=false)
+  -var ratedScore = 0;
+  -var today = new Date().toJSON().slice(0,10);
+  -var startDate;
+  -var finishDate;
+
+  - if (rating && rating.id)
+    -ratedScore = rating.value;
+    -startDate = rating.startDate;
+    -finishDate = rating.finishDate;
+
+  - if (!isModal)
+    p My Activity
+
+    //- Start Date
+    .flex.flex-center.book-action-section
+      span Started Reading&nbsp;
+      input(
+        type="text",
+        id="startDate",
+        value= startDate || today,
+        placeholder= startDate || today,
+        data-id= bookId,
+        data-name="rating-start",
+        class=`input-action input-placeholder ${startDate ? 'text-primary' : 'text-light'}`
+      )
+    //- Finish picker
+    .flex.flex-center.book-action-section
+      span Finished Reading&nbsp;
+      input(
+        type="text",
+        id="finishDate",
+        value= finishDate,
+        placeholder= finishDate || today,
+        data-id= bookId,
+        data-name="rating-finish",
+        class=`input-action input-placeholder ${finishDate ? 'text-primary' : 'text-light'}`
+      )
+
+  div(class=`flex flex-between border-btm book-action-rating ${isModal ? 'book-action-rating-modal' : ''}`)
+    +ratingTemplate(true, bookId, ratedScore)

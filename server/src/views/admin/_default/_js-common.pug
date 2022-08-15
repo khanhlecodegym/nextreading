@@ -1,0 +1,305 @@
+script(type="text/javascript").
+  var SITE_TITLE = 'NextReading';
+  var TODAY_STR = new Date().toJSON().slice(0, 10);
+  var STORAGE_KEY = {
+    LAST_UPDATE: 'last_update',
+    LANGUAGES: 'languages',
+    AUTHORS: 'authors',
+    CATEGORIES: 'categories',
+    COUNTRIES: 'countries',
+  }
+
+  function getLocalStorageData(key) {
+    return JSON.parse(localStorage.getItem(key));
+  };
+
+  function convertToSlug(text) {
+    return text.toLowerCase()
+      .normalize('NFD')
+      // Vietnamese characters
+      .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
+      .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e')
+      .replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i')
+      .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o')
+      .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u')
+      .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y')
+      .replace(/đ/gi, 'd')
+      // Special symbol
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
+  };
+
+  // Toast message
+  function displayToast(success, message) {
+    if (success) {
+      $("#toast-header").attr("class", "toast-header bg-success");
+      $("#toast-body").attr("class", "toast-body bg-success");
+    } else {
+      $("#toast-header").attr("class", "toast-header bg-danger");
+      $("#toast-body").attr("class", "toast-body bg-danger");
+    }
+
+    $("#toast-content").html(message);
+    $("#toast-message").toast('show');
+  };
+
+  // Render dropdown options
+  function renderDropdownOptions(
+    data, // Array object: { id, name, slug? }
+    ddWrapperId,
+    targetId,
+    targetDisplayId
+  ) {
+    var currentItem = $('#' + targetId).val();
+    var selectedItem = data.find(function(item) {
+      return item.id === (currentItem || '').trim();
+    });
+    var itemSelectorTemplate = '';
+
+    if (selectedItem) {
+      $("#" + ddWrapperId).html(selectedItem.name);
+    }
+
+    // Create item option
+    data.forEach(function(item, idx) {
+      itemSelectorTemplate += '<button class="dropdown-item btn-select" type="button"'
+        + ' data-value="' + item.id + '"'
+        + ' data-target="' + targetId + '"'
+        + ' data-display="' + (targetDisplayId || '') + '">'
+          + item.name
+        + '</button>'
+    });
+
+    // Render list option on dropdown selection
+    $("#" + ddWrapperId + "-menu").html(itemSelectorTemplate);
+  };
+
+  // Get all lookup data like Author, Category
+  function getAllDataLookup() {
+    var apiUrl = "api/all-data-refer";
+    $.get(apiUrl, function(data) {
+      var languages = data.languages;
+      var categories = data.categories;
+      var countries = data.countries;
+      localStorage.setItem(STORAGE_KEY.LANGUAGES, JSON.stringify(languages || []));
+      localStorage.setItem(STORAGE_KEY.CATEGORIES, JSON.stringify(categories || []));
+      localStorage.setItem(STORAGE_KEY.COUNTRIES, JSON.stringify(countries || []));
+    }).done(function() {
+      localStorage.setItem(STORAGE_KEY.LAST_UPDATE, TODAY_STR);
+      displayToast(true, 'Successfully updated all refer data.');
+    })
+    .fail(function() {
+      displayToast(false, 'Error updated all refer data!!!');
+    });
+  };
+
+  function initAdmin() {
+    var latestUpdate = localStorage.getItem(STORAGE_KEY.LAST_UPDATE);
+
+    if (latestUpdate !== TODAY_STR) {
+      getAllDataLookup();
+    }
+  };
+
+  $(document).ready(function() {
+    initAdmin();
+  });
+
+  /* Common behaviors */
+  $(document).ready(function() {
+    var entity = $('#entity').val();
+    var itemId;
+
+    // Auto update slug
+    $('body').on('change', '#name', function(event) {
+      $('#slug').val(convertToSlug(event.target.value));
+    });
+    $('body').on('change', '#title', function(event) {
+      var bookName = event.target.value;
+      var seoTitleValue =  bookName + ' by [author]';
+      var fullSeoTitle = seoTitleValue + ' | ' + SITE_TITLE;
+
+      if (fullSeoTitle.length <= SEO_TITLE_MAX) {
+        seoTitleValue = fullSeoTitle;
+      }
+
+      $('#slug').val(convertToSlug(bookName));
+      $('#seoTitle').val(seoTitleValue);
+      $('#seoDesc').val('Book Review: ' + bookName + ': ');
+    });
+
+    $('body').on('change', '#authorName', function(event) {
+      var currentDesc = $('#seoDesc').val();
+
+      setTimeout(function() {
+        var authorName = $('#authorName').val();
+        $('#seoTitle').val(currentDesc.replace('[author name]', authorName));
+        $('#seoDesc').val(currentDesc.replace('[author name]', authorName));
+      }, 300)
+    });
+
+    /* Delete action */
+    // Show confirmation modal: Get Id and Update modal name
+    $('body').on('click', '.btn-delete', function(event) {
+      $('#itemName').html($(this).data('name'));
+      itemId = $(this).data('id');
+    });
+
+    // Call API to execute delete
+    $('body').on('click', '#btn-execute-delete', function(event) {
+      var apiUrl = 'api/delete-' + entity;
+      $.post(
+        apiUrl,
+        { id: itemId },
+        function (result) {
+          var success = result.success;
+
+          $('#deleteConfirmModal').modal('hide');
+
+          if (success) {
+            // Remove item on current listing
+            $("#row-id-" + itemId).remove();
+            displayToast(true, 'Successfully delete item');
+          } else {
+            displayToast(false, 'Error deleting item');
+          }
+        }
+      );
+    });
+    /* End Delete action */
+
+    // Handle select action
+    $('body').on("click", ".btn-select", function() {
+      var dataTarget = $(this).data("target");
+      var dataTargetDisplay = $(this).data("display");
+      var displayId = $(this).parent().attr('aria-labelledby');
+      var displayText = $(this).text();
+
+      $("#" + dataTarget).val($(this).data("value"));
+      $("#" + displayId).html(displayText);
+
+      // Sometime need to display on input also
+      if (dataTargetDisplay) {
+        $("#" + dataTargetDisplay).val(displayText);
+      }
+    });
+
+    // Set data value by state for Publish & Status
+    $(".btn-state").click(function() {
+      var defaultClass = "btn btn-outline-secondary btn-state";
+      var dataTarget = $(this).data("target");
+
+      $("#" + dataTarget).val($(this).data("value"));
+
+      // Set default class for other button in the same group
+      $(".btn-state").each(function() {
+        if ($(this).data("target") === dataTarget) {
+          $(this).attr("class", defaultClass);
+        }
+      })
+      $(this).toggleClass("btn-outline-secondary").toggleClass("btn-success");
+    });
+
+    /* Upload image action */
+    //- Select file
+    $('body').on('change', '.custom-file-input', function() {
+      var allowTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      var fileType = $(this)[0].files[0].type;
+      var btnUpload = $(this).data('btnupload');
+
+      if (allowTypes.indexOf(fileType) !== -1) {
+        $('#' + btnUpload).attr('disabled', false);
+        $('#' + btnUpload).attr('data-valid', true);
+      }
+    });
+
+    //- Upload file img
+    $('body').on('click', '.btn-upload', function() {
+      // Btn disabled means no valid image types
+      if ($(this).attr('disabled')) {
+        return false;
+      }
+
+      var type = $(this).data('type');
+      var inputFileId = $(this).data('fileid');
+      var inputId = $(this).data('input');
+      var API_ENDPOINT = 'api/upload-image';
+
+      var formData = new FormData();
+      var id = $('body #id').val();
+      var file = $('#' + inputFileId)[0].files[0];
+
+      formData.append('file', file);
+      formData.append('id', id);
+      formData.append('entity', entity);
+
+      $.ajax({
+        url: API_ENDPOINT,
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+      }).done(function(data) {
+        $('#' + inputId).val(data.imgUrl);
+        displayToast(true, 'Successfully uploading '  + entity + ' image.');
+
+        // Display image on preview
+        if (type === 'image') {
+          $('#imgPreview').attr('src', data.imgUrl);
+        }
+      }).fail(function(){
+        displayToast(false, 'Error uploading ' + entity + ' image!!!');
+      });
+    });
+    /* End Upload image action */
+  });
+
+  // Typeahead Input
+  $(document).ready(function() {
+    $('body').on('keyup', '.typeahead-input', $.debounce(500, function(e) {
+      var inputValue = this.value;
+      var apiUrl = $(this).data("api");
+      var targetId = $(this).data("targetid");
+      var targetDisplayId = $(this).data("targetdisplayid");
+      var ddWrapperId = $(this).data("ddwrapperid");
+
+      if (!inputValue.trim() || inputValue.trim().length < 3) {
+        return;
+      }
+
+      $.get(apiUrl, { query: inputValue }, function() {
+        // Destroy dropdown
+        $('#' + ddWrapperId).dropdown('dispose');
+      })
+      .done(function(data) {
+        renderDropdownOptions(data, ddWrapperId, targetId, targetDisplayId);
+
+        // Delay a bit to make sure dropdown options render
+        setTimeout(function() {
+          $('#' + ddWrapperId).dropdown('toggle');
+        }, 300);
+      })
+      .fail(function() {
+        displayToast(false, 'Error get data!!!');
+      });
+    }));
+  });
+
+  // Get list countries
+  $(document).ready(function() {
+    var listCountries = getLocalStorageData(STORAGE_KEY.COUNTRIES) || [];
+
+    function renderCountriesOptions() {
+      var formatCountries = listCountries.map(it => ({
+        id: it.name,
+        name: it.name,
+      }));
+      renderDropdownOptions(formatCountries, 'ddCountry', 'country', '');
+    };
+
+    renderCountriesOptions();
+  });

@@ -1,0 +1,235 @@
+extends ../_default/base.pug
+
+block styles
+  style(type='text/css').
+    #editor-container {
+      min-height: 500px;
+      font-size: 16px;
+    }
+
+block content
+  script(src='https://cdn.tiny.cloud/1/69yu9r8rq253xgqrkz78e6tdol0h9x471pfw2sta06uyjjms/tinymce/5/tinymce.min.js', referrerpolicy='origin')
+
+  h3= title
+
+  form(
+    role="form",
+    method="POST",
+    id="reviewForm",
+    action= `review/${data.id ? 'update' : 'create'}`,
+    class="form-update"
+  )
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="bookId") Book ID
+            .input-group
+              input(
+                id="bookId",
+                name="bookId",
+                type="text",
+                value= data.bookId.id,
+                class="form-control",
+                placeholder="Book ID",
+                readonly
+              )
+              .input-group-append
+                a(
+                  href="book/" + data.bookId.id,
+                  target="_blank"
+                  class=`btn btn-outline-secondary ${data.bookId.id ? '' : 'disabled'}`
+                )
+                  i.fa.fa-eye
+          .form-group.col-5.position-relative
+            label(for="bookName") Book Name
+            input(
+              id="bookName",
+              name="bookName",
+              type="text",
+              value= data.bookId.title,
+              placeholder="Book Name",
+              class="form-control typeahead-input position-absolute",
+              style={'z-index': 2},
+              data-api="api/typeahead-book",
+              data-targetid="bookId",
+              data-targetdisplayid="bookName",
+              data-ddwrapperid="ddBook",
+              autocomplete="off"
+            )
+            div(class="dropdown position-absolute" style={'z-index': 1})
+              button(
+                class="invisible btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddBook",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select Book
+              div(id="ddBook-menu", class="dropdown-menu", aria-labelledby="ddBook")
+
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="userId") User ID
+            .input-group
+              input(
+                id="userId",
+                name="userId",
+                type="text",
+                value= data.userId.id,
+                class="form-control",
+                placeholder="User ID",
+                readonly
+              )
+              .input-group-append
+                a(
+                  href="user/" + data.userId.id,
+                  target="_blank"
+                  class=`btn btn-outline-secondary ${data.userId.id ? '' : 'disabled'}`
+                )
+                  i.fa.fa-eye
+          .form-group.col-5.position-relative
+            label(for="userEmail") User Email
+            input(
+              id="userEmail",
+              name="userEmail",
+              type="text",
+              value= data.userId.email,
+              placeholder="User Email",
+              class="form-control typeahead-input position-absolute",
+              style={'z-index': 2},
+              data-api="api/typeahead-user",
+              data-targetid="userId",
+              data-targetdisplayid="userEmail",
+              data-ddwrapperid="ddUser",
+              autocomplete="off"
+            )
+            div(class="dropdown position-absolute" style={'z-index': 1})
+              button(
+                class="invisible btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddUser",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select User
+              div(id="ddUser-menu", class="dropdown-menu", aria-labelledby="ddUser")
+
+    .row
+      .form-group.col-2
+        label(for="reviewId") Review ID
+        input(
+          id="reviewId",
+          name="id",
+          type="text",
+          value= data.id,
+          class="form-control",
+          readonly
+        )
+      .form-group.col-1
+        label(for="counting") Counting
+        input(
+          id="counting",
+          type="text",
+          class="form-control",
+          value= data.counting,
+          readonly
+        )
+      .form-group.col-1
+        label(for="score") Score
+        input(
+          id="score",
+          name="score",
+          type="text",
+          class="form-control",
+          value= data.score,
+        )
+      .form-group.col-3
+        - var isVerified = true
+          - if (data.verified === false)
+            - isVerified = false
+
+        label Publish Status
+        .btn-group
+          button(
+            type="button",
+            class=`btn ${isVerified === false ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+            data-target="verified",
+            data-value="0"
+          ) Draft
+          button(
+            type="button",
+            class=`btn ${isVerified === true ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+            data-target="verified",
+            data-value="1"
+          )
+            i.fa.fa-check.mr-2
+            | Verified
+        input(
+          id="verified",
+          name="verified",
+          type="hidden",
+          value=`${isVerified ? 1 : 0}`
+        )
+      .form-group.col-2
+        label(for="refer") Refer (Name)
+        .input-group
+          input(
+            id="refer"
+            name="refer",
+            type="text",
+            class="form-control",
+            value= data.refer,
+            placeholder="Refer"
+          )
+      .form-group.col-3
+        label(for="referUrl") Refer Url
+        .input-group
+          input(
+            id="referUrl"
+            name="referUrl",
+            type="text",
+            class="form-control",
+            value= data.referUrl,
+            placeholder="Refer Url"
+          )
+
+    .row
+      .form-group.col-12
+        #editor-container!= data.content
+
+    .row
+      input(
+        id="content",
+        name="content",
+        type="hidden",
+        placeholder="Content",
+        value= data.content
+      )
+      .col.d-flex.justify-content-between
+        a(
+          href= entity,
+          class="btn btn-outline-secondary"
+        )
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success submit-button")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts
+  include _js.pug

@@ -1,0 +1,32 @@
+-var pageLanguage = 'en'
+- if (isBookPage)
+  -pageLanguage = langCode
+
+doctype html
+html(⚡, lang= pageLanguage)
+  head
+    include ../../_partials/head.pug
+    //- AMP head
+    include head.pug
+
+  body.wrapper
+    //- Templates
+    include ../../_template/_footer.pug
+    include ../../_template/_header.pug
+    include ../../_template/_image.pug
+    include ../../_template/_rating.pug
+    include ../../_template/_rating-action.pug
+    include ../../_template/_review.pug
+    include ../../_template/_review-order.pug
+    include ../../_template/_pagination.pug
+
+    //- Icons
+    include ../../_partials/svg-icons.pug
+    include ../../_partials/social-network.pug
+
+    +headerTemplate(true)
+
+    div(class= `main ${isBookPage ? 'page-book' : ''}`)
+      block main
+
+    +footerTemplate(true)

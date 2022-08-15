@@ -1,0 +1,61 @@
+.icon {
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  fill: currentColor;
+  font-variant: normal;
+  text-transform: none;
+
+  &-menu {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &-warning {
+    width: 24px;
+    height: 24px;
+    color: var(--warning-color);
+  }
+
+  &-rating {
+    width: 2rem;
+    height: 2rem;
+    color: var(--text-secondary-color);
+  }
+
+  &-rated {
+    color: var(--warning-color);
+  }
+}
+
+.icon-vote {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  color: var(--text-secondary-color);
+
+  &-active {
+    color: var(--success-color);
+  }
+
+  &:hover {
+    color: var(--success-color);
+  }
+}
+
+// On Profile
+.icon-social {
+  font-size: 32px;
+
+  a {
+    margin: 0 $space-tiny;
+  }
+
+  img {
+    border-radius: 50%;
+  }
+}

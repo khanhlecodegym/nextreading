@@ -1,0 +1,25 @@
+mixin imageTemplate(src, className, alt, width, height, isAmp=false, layout="fixed")
+  if isAmp
+    amp-img(
+      layout= layout,
+      class= className,
+      alt= alt,
+      src= src.replace('jpg', 'webp'),
+      width= width,
+      height= height,
+    )
+      amp-img(
+        fallback,
+        layout= layout,
+        class= className,
+        alt= alt,
+        src= src,
+        width= width,
+        height= height,
+      )
+  else
+    img(
+      class= className,
+      alt= alt,
+      src= src,
+    )

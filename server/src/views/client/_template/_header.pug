@@ -1,0 +1,23 @@
+mixin headerTemplate(isAmp=false)
+  header(class= `header ${isBookPage ? 'header-book' : ''}`)
+    .container.flex.flex-between.header-container
+      a.brand-link(href= '/', title= SITE_NAME)
+        +imageTemplate(
+          `/img/${isBookPage ? 'brand-dark' : 'brand'}.svg`,
+          'brand',
+          'NextReading',
+          "188",
+          "34",
+          isAmp,
+          "responsive"
+        )
+
+      svg(
+        class="hidden-tablet icon-menu btn btn-action",
+        fill="currentColor",
+        data-name="menu",
+      )
+        use(xlink:href="#icon-menu")
+      nav#menu.menu.animation.hidden-mobile
+        ul.menu-list
+          include ../_partials/navigation.pug

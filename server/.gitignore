@@ -1,0 +1,8 @@
+node_modules
+build
+static/*.css
+static/js/*.js
+static/*.xml
+src/views/**/*.css
+.env
+package-lock.json

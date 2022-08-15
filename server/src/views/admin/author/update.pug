@@ -1,0 +1,246 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+  input(id="entity", type="hidden", value= entity)
+
+  form(method="POST", action=`${entity}/${data.id ? 'update' : 'create'}`, class="formUpdate")
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="id") ID
+            input(
+              id="id",
+              name="id",
+              type="text",
+              class="form-control",
+              value= data.id,
+              readonly
+            )
+
+          - if (data.id)
+            .form-group.col-5
+              label Add Book
+              a(
+                href= `book/create?authorId=${data.id}`,
+                class="btn btn-success form-control"
+              )
+                i.fa.fa-book  Add Book
+
+        .form-row
+          .form-group.col-7
+            label(for="name") Name
+            input(
+              id="name",
+              name="name",
+              type="text",
+              class="form-control",
+              placeholder="Name",
+              value= data.name,
+            )
+          .form-group.col-5
+            label List Books
+            a(
+              href= `book?authorId=${data.id}`,
+              class="btn btn-info form-control"
+            )
+              i.fa.fa-book  Books
+
+        .form-group
+          label(for="slug") Slug
+          input(
+            id="slug",
+            name="slug",
+            type="text",
+            class="form-control",
+            placeholder="Slug",
+            value= data.slug,
+          )
+
+        .form-row
+          .form-group.col-4
+            label(for="dob") Date of Birth
+            input(
+              id="dob",
+              name="dob",
+              type="text",
+              class="form-control",
+              placeholder="Date of Birth",
+              value= data.dob,
+            )
+          .form-group.col-8
+            label(for="website") Website
+            input(
+              id="website",
+              name="website",
+              type="text",
+              class="form-control",
+              placeholder="Website",
+              value= data.website,
+            )
+
+        .form-group
+          label(for="pob") Place of Birth
+          input(
+            id="pob",
+            name="pob",
+            type="text",
+            class="form-control",
+            placeholder="Place of Birth",
+            value= data.pob,
+          )
+
+        .form-group
+          label(for="deathDate") Death Date
+          input(
+            id="deathDate",
+            name="deathDate",
+            type="text",
+            class="form-control",
+            placeholder="Death Date",
+            value= data.deathDate,
+          )
+
+      .col
+        .form-group
+          label(for="scraping-content") Scraping content
+          .input-group
+            input(
+              id="inputAuthorUrl",
+              type="text",
+              class="form-control",
+              placeholder="goodReads, Tiki",
+            )
+            .input-group-append
+              button(
+                id="btnScraping",
+                class="btn btn-outline-secondary",
+                type="button",
+                data-id="inputAuthorUrl",
+                data-type= entity,
+              )
+                i.fa.fa-cloud-download
+
+        .form-group
+          label(for="seoTitle") SEO Title
+          input(
+            id="seoTitle",
+            name="seoTitle",
+            type="text",
+            class="form-control",
+            placeholder="SEO Title",
+            value=data.seoTitle,
+          )
+
+        .form-group
+          label(for="seoDesc") SEO Description
+          textarea(
+            id="seoDesc",
+            name="seoDesc",
+            rows="2"
+            class="form-control",
+            placeholder="SEO Description",
+          ) #{data.seoDesc}
+
+        .form-group.col-8
+          label(for="country") Country
+          .dropdown
+            button(
+              class="btn btn-info btn-block dropdown-toggle",
+              type="button",
+              id="ddCountry",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false"
+            ) Select Country
+            div(id="ddCountry-menu", class="dropdown-menu", aria-labelledby="ddCountry")
+              //- List Country Option
+          input(
+            id="country",
+            name="country",
+            type="hidden",
+            class="form-control",
+            placeholder="country",
+            value= data.country,
+          )
+
+        - if (data.id)
+          .form-row
+            .form-group.col-6
+              label(for="img") Image
+              .input-group
+                input(
+                  id="img",
+                  name="img",
+                  type="text",
+                  class="form-control",
+                  placeholder="Image",
+                  value= data.img,
+                )
+                .input-group-append
+                  button(
+                    type="button",
+                    class="btn btn-outline-secondary"
+                  )
+                    i(class= `fa fa-lg ${data.img ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-warning'}`)
+            .form-group.col-6
+              label Select file
+              .input-group
+                .custom-file
+                  input(
+                    type="file",
+                    class="custom-file-input d-none",
+                    id="inputFileImg",
+                    data-btnupload="btnUploadImg",
+                  )
+                  label(
+                    class="custom-file-label",
+                    for="inputFileImg"
+                  ) Select
+                .input-group-append
+                  button(
+                    id="btnUploadImg"
+                    class="btn btn-outline-secondary btn-upload",
+                    type="button",
+                    data-type="image",
+                    data-fileid="inputFileImg",
+                    data-input="img",
+                    disabled=true,
+                  ) Upload
+              small.form-text.text-muted Image size should be: 200 x 200 (px)
+
+    .row
+      .form-group.col
+        label(for="description") Description
+        textarea(
+          id="description",
+          name="description",
+          rows="6"
+          class="form-control",
+          placeholder="Description"
+        ) #{data.description}
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-toggle="modal",
+            data-target="#deleteConfirmModal",
+            data-id= data.id,
+            data-name= data.name,
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success submit-button", disabled)
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts

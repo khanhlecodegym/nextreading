@@ -1,0 +1,55 @@
+include ../_template/_search-input.pug
+
+- var isActive = false
+- var menus = []
+//- - menus.push({ name: 'Đăng Nhập', url: 'login' })
+//- - menus.push({ name: 'Đăng Ký', url: 'signup', preicon: 'like' })
+
+each item in menus
+  li(class=`menu-item ${isActive ? 'is-active' : ''}`)
+    a(class="menu-link", href= item.url, title= item.name)
+      - if (item.preicon)
+        svg(class="icon", fill="currentColor")
+          use(xlink:href=`#icon-${item.preicon}`)
+      | #{item.name}
+
+li.menu-item.menu-item-close.hidden-tablet
+  svg(
+    class="icon text-light btn btn-action",
+    fill="currentColor",
+    data-name="menu",
+  )
+    use(xlink:href="#icon-close")
+
+- if (!isHomePage)
+  li.menu-item
+    +searchInputTemplate(true)
+
+- if (user && user.username)
+  - if (user.role < 3)
+    //- Normal user will not see this button
+    li(class="menu-item menu-item-auth")
+      a(href= `/admin/`,title="Admin dashboard") Dashboard
+
+  li(class="menu-item menu-item-auth")
+    a(href= `/user/${user.username}`, title="User Profile") #{user.username}
+
+  li(class="menu-item menu-item-auth")
+    a(href="/setting", title="Profile") Profile
+
+  li(class="menu-item menu-item-auth")
+    a(href="/logout", title="Logout") Logout
+
+- else
+  li(class="menu-item")
+    a(
+      class="btn btn-login flex",
+      href="/login",
+      title="Login"
+    ) Log in
+  li(class="menu-item")
+    a(
+      class="btn btn-primary btn-login flex",
+      href="/signup",
+      title="Sign up"
+    ) Sign up

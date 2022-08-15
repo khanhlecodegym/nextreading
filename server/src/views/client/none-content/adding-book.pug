@@ -1,0 +1,66 @@
+extends ../_default/base.pug
+
+block main
+  .container
+    -if (!user || !user.id)
+      h2.text-error.text-center You have to login to adding new book
+      .text-center
+        a(href="/login", class="btn btn-login btn-primary btn-auth") Login
+
+    -else
+      h1 Adding New Book
+      form(id="addBook", method="POST")
+        div.form-group
+          label(for="title") Book title (
+            span.text-error *
+            | )
+          input(
+            id="bookTitle",
+            name="title",
+            type="title",
+            class="form-control",
+            placeholder="Book title",
+            value= bookTitle
+          )
+          small.text-light At least 2 characters
+
+        div.flex.flex-between
+          .col-2
+            .form-group
+              label(for="isbn") ISBN
+              input(
+                id="isbn",
+                name="isbn",
+                type="isbn",
+                class="form-control",
+                placeholder="ISBN"
+              )
+          .col-2
+            .form-group
+              label(for="numberOfPages") Number of Pages
+              input(
+                id="numberOfPages",
+                name="numberOfPages",
+                type="number",
+                class="form-control",
+                placeholder="Number of Pages",
+              )
+
+        div.form-group
+          label(for="description") Description
+          textarea(
+            id="description",
+            name="description",
+            rows="6"
+            class="form-control form-control-textarea",
+            placeholder="Description"
+          )
+
+        .flex.flex-between
+          a(href="/login", class="btn btn-outline-dark") LogIn
+          button(
+            id="btnSubmit",
+            type="submit",
+            class="btn btn-primary btn-login btn-disabled",
+            disabled,
+          ) Submit

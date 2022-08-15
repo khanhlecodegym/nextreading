@@ -1,0 +1,11 @@
+div.book-poster.mb20
+  a(
+    href= `${reviewCounting ? '/book/' + bookSlug : '#!'}`,
+    title= title
+  )
+    +imageTemplate(
+      `${img || defaultBookImg}`,
+      'img img-cover', title, '200', '300', isAmp, 'responsive'
+    )
+  .flex.flex-center
+    +ratingTemplate(ratingAVG)

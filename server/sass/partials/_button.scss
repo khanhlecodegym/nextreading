@@ -1,0 +1,70 @@
+.btn {
+  // Styles
+  outline: none;
+  border-radius: $radius-normal;
+  cursor: pointer;
+
+  &-action {
+    cursor: pointer;
+  }
+
+  &-text {
+    border: none;
+    background: none;
+  }
+
+  &-primary {
+    color: #fff;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+  }
+
+  &-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // Use span text to avoid override styles
+  &-show-more {
+    cursor: pointer;
+    font-style: oblique;
+    display: block;
+    text-align: right;
+    color: var(--secondary-color);
+  }
+
+  // Base on Page
+  &-login {
+    height: 40px;
+    padding: 0 $space-large;
+    border: none;
+  }
+}
+
+// Btn group as tab section
+.btn-group {
+  &-item {
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid var(--divider-color);
+    font-size: 14px;
+    border-radius: 0;
+
+    &:first-child {
+      border-right: none;
+      border-top-left-radius: $radius-normal;
+      border-bottom-left-radius: $radius-normal;
+    }
+    &:last-child {
+      border-left: none;
+      border-top-right-radius: $radius-normal;
+      border-bottom-right-radius: $radius-normal;
+    }
+
+    &-active {
+      color: white;
+      background-color: var(--primary-color);
+      pointer-events: none;
+    }
+  }
+}

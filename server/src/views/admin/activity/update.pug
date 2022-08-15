@@ -1,0 +1,74 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+
+  form(method="POST", action=`${entity}/${data.id ? 'update' : 'create'}`)
+    .row
+      .col
+        .form-group
+          label(for="id") ID
+          input(
+            id="id",
+            name="id",
+            type="text",
+            value=data.id,
+            class="form-control",
+            readonly
+          )
+
+        .form-group
+          label(for="name") Name
+          input(
+            id="name",
+            name="name",
+            type="text",
+            value=data.name,
+            class="form-control",
+            placeholder="Name"
+          )
+
+      .col
+        .form-group
+          label(for="score") Score
+          input(
+            id="score",
+            name="score",
+            type="text",
+            value= data.score,
+            class="form-control",
+            placeholder="Score"
+          )
+
+    .row
+      .form-group.col-12
+        label(for="description") Description
+        textarea(
+          id="description",
+          name="description",
+          rows="3"
+          class="form-control",
+          placeholder="Description"
+        ) #{data.description}
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit

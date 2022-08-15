@@ -1,0 +1,125 @@
+.list-book {
+  display: grid;
+  grid-gap: $space-small;
+  padding-top: $space-large;
+  text-align: center;
+
+  &-author {
+    @media screen and (max-width: $tablet - 2px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (min-width: $tablet - 2px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    @media screen and (min-width: $desktop) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  &-user {
+    @media screen and (max-width: $desktop) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (min-width: $desktop) {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+}
+
+/***
+  Table page reading journey layout on User Profile
+  - Tablet & Desktop:
+    | Month | Day | Image | Name | Rating | #ReRead | Edit |
+  - Mobile:
+    | Month | Day    | Image | Name   |
+    |       | #Reread|       | Rating |
+***/
+
+.table-diary {
+  display: grid;
+  border-bottom: 1px solid var(--divider-color);
+  padding: $space-tiny 0;
+  text-align: center;
+
+  @media screen and (max-width: $tablet - 2px) {
+    grid-template-areas:
+      "tmonth tday timage tname tedit"
+      "tmonth tday timage trating tedit";
+    grid-template-columns: 64px 40px 54px 1fr 50px;
+  }
+
+  @media screen and (min-width: $tablet - 2px) {
+    grid-template-areas:
+      "tmonth tday timage tname trating tedit";
+    grid-template-columns: 80px 64px 64px 1fr 110px 50px;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Hide 2 columns below tablet
+    &.table-head-hide {
+      @media screen and (max-width: $tablet - 3px) {
+        display: none;
+      }
+    }
+  }
+
+  &-head {
+    border-top: 1px solid var(--divider-color);
+    background-color: var(--divider-color);
+    text-transform: uppercase;
+  }
+
+  &-title {
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  // Override styles on mobile
+  .trating {
+    justify-content: flex-start;
+  }
+}
+
+// Grid table layout
+.t {
+  &month {
+    grid-area: tmonth;
+  }
+  &day {
+    grid-area: tday;
+  }
+  &image {
+    grid-area: timage;
+  }
+  &name {
+    grid-area: tname;
+  }
+  &rating {
+    grid-area: trating;
+  }
+  // &reread {
+  //   grid-area: treread;
+  // }
+  &edit {
+    grid-area: tedit;
+  }
+};
+
+.calendar {
+  display: grid;
+  grid-template-rows: 25px 1fr;
+  border: 1px solid var(--divider-color);
+  border-radius: $radius-normal;
+  text-align: center;
+
+  &-year {
+    background-color: var(--divider-color);
+    border-radius: $radius-normal $radius-normal 0 0;
+    text-transform: uppercase;
+  }
+}

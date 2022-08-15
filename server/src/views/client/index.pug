@@ -1,0 +1,8 @@
+extends _default/base.pug
+
+block metadata
+  - var metaAMPLink = `${BASE_URL}/amp`
+
+block main
+  include _template/home.pug
+  +homeTemplate(false)

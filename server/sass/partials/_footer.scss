@@ -1,0 +1,38 @@
+// Layout for Homepage and Listing page
+.footer {
+  padding-top: $space-normal;
+
+  // Navigation section
+  &-content {
+    text-align: left;
+    margin-bottom: $space-normal;
+
+    &-group {
+      margin-left: $space-large;
+
+      a {
+        display: block;
+      }
+    }
+  }
+}
+
+.copyright {
+  background-color: #fafbfc;
+  color: var(--text-secondary-color);
+  padding: $space-small 0;
+
+  &-year {
+    font-size: 14px;
+
+    a {
+      margin-left: $space-small;
+    }
+  }
+
+  &-social {
+    a {
+      margin: 0 $space-small;
+    }
+  }
+}

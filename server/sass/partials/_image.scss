@@ -1,0 +1,72 @@
+$img-cover-w: 200px;
+$img-cover-h: $img-cover-w * 1.5;
+$img-list-w: 160px;
+$img-list-h: $img-list-w * 1.5;
+$img-list-mobile-w: 120px;
+$img-list-mobile-h: $img-list-mobile-w * 1.5;
+$img-suggestion-w: 90px;
+$img-suggestion-h: $img-list-mobile-w * 1.4;
+$img-user-size: 200px;
+$img-table-w: 40px;
+$img-table-h: $img-table-w * 1.5;
+
+img {
+  max-width: 100%;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 0 1px 1px var(--shadow-color);
+
+  // Used for Book cover and Author image
+  &-cover {
+    width: $img-cover-w;
+    height: $img-cover-h;
+    border-radius: $radius-normal;
+  }
+
+  &-list {
+    width: $img-list-w;
+    height: $img-list-h;
+    border-radius: $radius-normal;
+
+    @media screen and (max-width: $tablet) {
+      width: $img-list-mobile-w;
+      height: $img-list-mobile-h;
+    }
+  }
+
+  &-suggestion {
+    width: $img-suggestion-w;
+    height: $img-suggestion-h;
+    border-radius: $radius-normal;
+  }
+
+  &-user {
+    width: $img-user-size;
+    height: $img-user-size;
+    border-radius: 50%;
+  }
+
+  // Smaller image on table
+  &-table {
+    width: $img-table-w;
+    height: $img-table-h;
+    border-radius: $radius-small;
+  }
+
+  // On sidebar section
+  &-aff {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin-right: $space-tiny;
+    box-shadow: 0 0 1px 1px var(--shadow-color);
+  }
+}
+
+amp-img {
+  margin: 0 auto;
+}

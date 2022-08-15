@@ -1,0 +1,11 @@
+mixin reviewOrderTemplate(pageUrl, page = 1, sort='newest')
+  -var orderTypes = ['Newest', 'Oldest', 'Votes'];
+
+  .btn-group
+    each item in orderTypes
+      -var itemValue = item.toLowerCase();
+
+      a(
+        href= `${pageUrl}?page=${page}&sort=${itemValue}`,
+        class= `btn-group-item ${sort === itemValue ? 'btn-group-item-active' : ''}`
+      ) #{item}

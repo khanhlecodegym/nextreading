@@ -1,0 +1,70 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+  input(id="entity", type="hidden", value= entity)
+
+  form(
+    method="POST",
+    class="form-update",
+    action=`${entity}/${data.id ? 'update' : 'create'}`
+  )
+    .row
+      .col
+        .form-row
+          .form-group.col-6
+            label(for="id") ID
+            input(
+              id="id",
+              name="id",
+              type="text",
+              value= data.id,
+              class="form-control",
+              readonly
+            )
+
+          .form-group.col-6
+            label(for="userId") User ID
+            input(
+              id="userId",
+              name="userId",
+              type="text",
+              value= data.userId || user.id,
+              class="form-control",
+              readonly
+            )
+
+        .form-group
+          label(for="url") Url
+          input(
+            id="url",
+            name="url",
+            type="text",
+            value= data.url,
+            class="form-control",
+            placeholder="Url"
+          )
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-toggle="modal",
+            data-target="#deleteConfirmModal",
+            data-id= data.id,
+            data-name= `${data.title || data.name}`
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts

@@ -1,0 +1,93 @@
+mixin footerTemplate(isAmp=false)
+  footer.footer
+    .container.page
+      +imageTemplate(
+        '/img/brand.svg',
+        'brand-small',
+        'NextReading',
+        "112",
+        "20",
+        isAmp,
+        "responsive"
+      )
+
+      .footer-content.flex.flex-default.text-small
+        .footer-content-group
+          h4.heading.heading-item Events
+          a(href="#") Reading Challenges
+          a(href="#") Review Challenges
+
+        .footer-content-group
+          h4.heading.heading-item Company
+          a(href="/about") About
+          a(href="/contact") Contact us
+          a(href="/terms") Terms of use
+          a(href="/privacy") Privacy policy
+
+    .copyright
+      .container.flex.flex-between
+        .copyright-year
+          span © #{new Date().getFullYear()} #{SITE_NAME}
+          a(href="/terms-of-service", title="Privacy Policy") Terms
+          a(href="/privacy-policy", title="Privacy Policy") Privacy
+
+        .copyright-social
+          a(
+            href="https://www.facebook.com/nextreading.official",
+            title="NextReading on Facebook"
+          )
+            svg(class="icon", fill="currentColor")
+              use(xlink:href=`#icon-fb`)
+          a(
+            href="https://www.instagram.com/nextreading.official",
+            title="NextReading on Instagram"
+          )
+            svg(class="icon", fill="currentColor")
+              use(xlink:href=`#icon-ig`)
+          a(
+            href="https://twitter.com/nextreadingcom",
+            title="NextReading on Twitter"
+          )
+            svg(class="icon", fill="currentColor")
+              use(xlink:href=`#icon-tw`)
+          a(
+            href="https://www.linkedin.com/company/nextreading",
+            title="NextReading on LinkedIn"
+          )
+            svg(class="icon", fill="currentColor")
+              use(xlink:href=`#icon-linkedin`)
+
+  - if (isAmp)
+    amp-analytics(type="gtag", data-credentials="include")
+      script(type="application/json").
+        {
+          "vars" : {
+            "gtag_id": "G-DZSXTD2SGT",
+            "config" : {
+              "G-DZSXTD2SGT": { "groups": "default" }
+            }
+          }
+        }
+  - else
+    script(async, src="https://www.googletagmanager.com/gtag/js?id=G-DZSXTD2SGT")
+    //- - if (isBookPage || isAuthorPage || isUserPage)
+    script(async, data-ad-client="ca-pub-0374760140114293", src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")
+    script(async, src="/js/main.js")
+
+  - if (user && user.id)
+    //- Authenticated import
+    link(rel='stylesheet', href='/user.css')
+
+    //- Date picker
+    link(rel='stylesheet', href='//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css')
+    script(src='https://code.jquery.com/jquery-1.12.4.js')
+    script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
+
+    //- TinyEditor
+    script(src='https://cdn.tiny.cloud/1/69yu9r8rq253xgqrkz78e6tdol0h9x471pfw2sta06uyjjms/tinymce/5/tinymce.min.js', referrerpolicy='origin')
+    script(async, src='/js/user.js')
+    script(async, src='/js/validation.js')
+
+  - if (noneContentPage)
+    link(rel='stylesheet', href='/user.css')
+    script(async, src='/js/validation.js')

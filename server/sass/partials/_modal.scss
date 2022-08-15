@@ -1,0 +1,57 @@
+.modal {
+  // Global modal hidden everything behind
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--modal-bg-color);
+  overflow-y: hidden;
+  z-index: 2;
+
+  @media screen and (max-width: $tablet) {
+    padding-top: $space-super-large * 2;
+  }
+
+  @media screen and (min-width: $tablet) {
+    padding: $space-super-large 0;
+  }
+
+  // This class apply on body to handle over scroll
+  &-open {
+    overflow: hidden;
+  }
+
+  &-header {
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    margin: 0 #{-$space-normal} $space-normal;
+    background: white;
+    padding: $space-small $space-normal;
+    z-index: 2;
+    border-bottom: 1px solid var(--shadow-color);
+  }
+
+  &-btn {
+    font-size: 1.5rem;
+  }
+
+  &-content {
+    margin: auto;
+    overflow-y: auto;
+    max-height: 100%;
+
+    &.card {
+      @media screen and (max-width: $tablet) {
+        border-radius: $radius-normal $radius-normal 0 0;
+      }
+    }
+
+    @media screen and (min-width: $tablet) {
+      max-width: $tablet;
+      // Clean wrapper padding
+      max-height: calc(100% - #{$space-super-large});
+    }
+  }
+}

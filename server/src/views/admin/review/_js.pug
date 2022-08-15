@@ -1,0 +1,18 @@
+script(type="text/javascript").
+  $(document).ready(function() {
+    tinymce.init({
+      selector: '#editor-container',
+      menubar: false,
+      statusbar: false,
+      plugins: 'fullscreen paste',
+      toolbar: 'fullscreen | formatselect bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | blockquote | removeformat',
+      block_formats: 'Heading=h3; Paragraph=p;',
+      paste_as_text: true,
+      content_css: '/editor.css'
+    });
+
+    $('#reviewForm').submit(function() {
+      $('#content').val(tinymce.activeEditor.getContent());
+      return true;
+    });
+  });

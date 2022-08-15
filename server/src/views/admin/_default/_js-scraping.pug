@@ -1,0 +1,42 @@
+script(type="text/javascript").
+  $(document).ready(function() {
+    $('body').on('click', '#btnScraping', function(event) {
+      var parentDiv = $(this).closest('.form-group');
+      var apiUrl = 'api/scraping-data';
+      var urlInputId = $(this).data('id');
+      var url = $('#' + urlInputId).val();
+      var type = $(this).data('type');
+
+      $.post(
+        apiUrl,
+        { url: url, type: type },
+        function (response) {
+          if (response['duplicated']) {
+            alert('Duplicated slug: ' + response['slug']);
+            var parentDivSlug = $('#slug').closest('.form-group');
+            var linkDuplicatedBook = '<a class="input-group text-danger" href="/book/' + response['slug'] + '" target="_blank" />';
+            linkDuplicatedBook += 'Link Duplicated Book</a>';
+            parentDivSlug.append(linkDuplicatedBook);
+          }
+
+          for (var key in response) {
+            if (response.hasOwnProperty(key)) {
+              if (key === 'img') { // Special case
+                var linkImgEl = '<a class="input-group" href="' + response[key] + '" target="_blank" />';
+                linkImgEl += 'Link image</a>';
+                parentDiv.append(linkImgEl);
+              } else {
+                $('#' + key).val(response[key]);
+              }
+            }
+          }
+        }
+      )
+      .done(function() {
+        displayToast(true, 'Successfully scraping data.');
+      })
+      .fail(function() {
+        displayToast(false, 'Scraping data error!!!');
+      });
+    });
+  });

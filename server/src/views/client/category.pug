@@ -1,0 +1,16 @@
+extends _default/base.pug
+
+block metadata
+  - var metaPageTitle = seoTitle
+  - var metaPageDesc = seoDesc
+  - var metaContentType = "article"
+  - var metaPageImage = img
+  - var metaCanonical = `${BASE_URL}/category/${category.slug}`
+  - var metaAMPLink = `${BASE_URL}/amp/category/${category.slug}`
+
+block schemaMarkup
+  include _schema/schema-category.pug
+
+block main
+  include _template/category.pug
+  +categoryTemplate(false)

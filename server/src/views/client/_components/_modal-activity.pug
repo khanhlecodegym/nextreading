@@ -1,0 +1,56 @@
+#modalActivity.modal.hidden
+  -var ratedScore = 0;
+  -var today = new Date().toJSON().slice(0,10);
+  -var startDate;
+  -var finishDate;
+
+  .modal-content.card
+    .flex.flex-default.modal-header
+      div
+        p.text-small.text-light.m0 Edit Your activity
+        h2.heading.heading-section
+      svg(
+        class="icon text-light btn btn-action",
+        fill="currentColor",
+        data-name="modal",
+        data-id="modalActivity",
+      )
+        use(xlink:href="#icon-close")
+    .content
+      //- Start Date
+      .flex.flex-center.book-action-section
+        span Started Reading&nbsp;
+        input(
+          type="text",
+          id="startDate",
+          value= today,
+          placeholder= today,
+          class="input-placeholder text-light"
+        )
+      //- Finish picker
+      .flex.flex-center.book-action-section
+        span Finished Reading&nbsp;
+        input(
+          type="text",
+          id="finishDate",
+          value= today,
+          placeholder= today,
+          class="input-placeholder text-light"
+        )
+
+      //- Rating
+      .flex.flex-center
+        .flex.book-action-rating
+          +ratingTemplate(false, '', 0)
+    .flex.flex-between
+      span(
+        class="btn btn-action",
+        data-name="modal",
+        data-id="modalActivity",
+      ) Cancel
+      input(id="inputReviewId", type="hidden")
+      button(
+        id="btnSubmitActivity",
+        type="button",
+        class="btn btn-login btn-primary",
+      ) Submit

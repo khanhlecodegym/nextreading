@@ -1,0 +1,46 @@
+mixin authorTemplate(isAmp=false)
+  -var defaultAuthorImg = '/img/placeholder-author.svg'
+  -var defaultBookImg = '/img/placeholder-book.svg'
+
+  .container.page
+    .page-sidebar.sidebar.text-center
+      +imageTemplate(
+        `${author.img || defaultAuthorImg}`,
+        'img img-cover', author.name, '200', '300', isAmp,
+      )
+
+      .icon-social.flex.flex-center
+        +socialNetworkTemplate(
+          author.twitter,
+          author.facebook,
+          author.instagram,
+          author.youtube,
+        )
+
+      h3.heading.heading-section Personal Info
+
+      - if (author.dob)
+        h4.heading.heading-item Birthday
+        p= author.dob
+
+      - if (author.pob)
+        h4.heading.heading-item Place of Birth
+        p= author.pob
+
+    .page-content
+      h1.heading.heading-page= author.name
+      - if (author.description)
+        p= author.description
+
+      //- Ad unit: NextReading - AuthorDetail - Section
+      //- .text-center
+      //-   ins(class="adsbygoogle", style="display:block", data-ad-client="ca-pub-0374760140114293", data-ad-slot="6457251461", data-ad-format="auto", data-full-width-responsive="true")
+
+      h2.heading.heading-section.border-btm= `${author.name}'s Books`
+      .list-book.list-book-author
+        each item in books
+          a(href=`/book/${item.slug}`, title= item.title)
+            +imageTemplate(
+              `${item.img || defaultBookImg}`,
+              'img img-list', item.title, '160', '256', isAmp,
+            )

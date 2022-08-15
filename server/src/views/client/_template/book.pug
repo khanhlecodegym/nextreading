@@ -1,0 +1,73 @@
+mixin bookTemplate(isAmp=false)
+  -var defaultBookImg = '/img/placeholder-book.svg';
+
+  include _review-modal.pug
+
+  //- This hidden input for Review content auto saving
+  input(id="bookSlug", type="hidden", value= slug)
+
+  .book-cover
+    .book-cover-bg(style={'background-image': `url(${img || defaultBookImg})`})
+    .container.page.book-meta
+      include ../_partials/_book-poster.pug
+
+      div.book-info
+        div
+          h1.heading.heading-page #{title}
+            -if (!verified)
+              span(title=`${verified ? '' : 'Under verification'}`)
+                svg(class="icon icon-warning")
+                  use(xlink:href="#icon-warning")
+          div
+            | Author:&nbsp;
+            a.heading.heading-item(
+              href=`/author/${authorId.slug}`,
+              title= `${authorId.name} Books`,
+            ) #{authorId.name}
+          -var shouldHideContentDefault = description.length > 450
+          p(
+            class=`book-meta-desc ${shouldHideContentDefault ? 'content-hidden' : ''}`
+          )= description
+          - if (shouldHideContentDefault)
+          span.btn-show-more More...
+
+        include ../_partials/_book-action.pug
+
+  .container.book-content
+    //- Affiliate section
+    div
+      .book-sidebar
+        include ../_partials/_affiliate.pug
+        include ../_partials/_suggestion.pug
+
+        //- Ad unit: NextReading - BookDetail - Sidebar
+        //- -if (!isAmp)
+        //-   .text-center
+        //-     ins(class="adsbygoogle", style="display:block", data-ad-client="ca-pub-0374760140114293", data-ad-slot="1436681462", data-ad-format="auto", data-full-width-responsive="true")
+
+    //- Review content
+    section.container
+      .book-review-section
+        //- Ad unit: NextReading - BookDetail - Section
+        //- -if (!isAmp)
+        //-   .text-center
+        //-     ins(class="adsbygoogle", style="display:block", data-ad-client="ca-pub-0374760140114293", data-ad-slot="3068670793", data-ad-format="auto", data-full-width-responsive="true")
+
+        .flex.flex-between
+          //- Total number of Reviews
+          h3.heading= `${numberOfReviews} Reviews`
+          -pageUrl = `/book/${slug}`
+
+          //- Ordering by type
+          +reviewOrderTemplate(pageUrl, page, sort)
+        -if (numberOfReviews > 10)
+          +paginationTemplate(pageUrl, numberOfReviews, page, sort)
+
+        each item in reviews
+          - var voted = votedReviews.join(',').includes(item._id)
+          +reviewTemplate(item, voted, isAmp)
+
+    //- Banner
+    div
+      .book-sidebar
+        include ../_partials/_ads-banner.pug

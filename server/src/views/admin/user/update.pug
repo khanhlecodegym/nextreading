@@ -1,0 +1,222 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+
+  form(method="POST", action=`${entity}/${data.id ? 'update' : 'create'}`)
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="id") ID
+            input(
+              id="id",
+              name="id",
+              type="text",
+              value=data.id,
+              class="form-control",
+              readonly
+            )
+          .form-group.col-5.text-right
+            label(for="id") Created Book
+            a(
+              href= `/admin/report/user/${data.id}`,
+              class="form-control btn btn-primary",
+              target="_blank"
+            ) List Book
+
+        .form-group
+          label(for="email") Email
+          input(
+            id="email",
+            name="email",
+            type="email",
+            class="form-control",
+            placeholder="Email",
+            value= data.email,
+          )
+
+        .form-row
+          .form-group.col-6
+            label(for="username") Username
+            input(
+              id="username",
+              name="username",
+              type="text",
+              class="form-control",
+              placeholder="Username",
+              value= data.username,
+            )
+          .form-group.col-6
+            label(for="name") Name
+            input(
+              id="name",
+              name="name",
+              type="text",
+              class="form-control",
+              placeholder="Name",
+              value= data.name,
+            )
+
+        - if (!data.id)
+          .form-group
+            label(for="password") Password
+            input(
+              id="password",
+              name="password",
+              type="password",
+              class="form-control",
+              placeholder="Set Password",
+              value= data.password,
+            )
+
+        .form-group
+          - var userRole = data.role >= 0 ? data.role : 3
+          label Account Type #{data.role}
+          .btn-group.btn-block
+            each item, idx in accountTypes
+              button(
+                type="button",
+                class=`btn ${userRole === idx ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                data-target="role",
+                data-value= idx
+              )= item
+          input(
+            id="role",
+            name="role",
+            type="hidden",
+            value= userRole
+          )
+
+        .form-group
+          label Gender
+          .btn-group.btn-block
+            each item, idx in accountGenders
+              button(
+                type="button",
+                class=`btn ${gender === idx ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                data-target="gender",
+                data-value= idx
+              )= item
+          input(
+            id="gender",
+            name="gender",
+            type="hidden",
+            value= gender
+          )
+
+        .form-group.col-4
+          label(for="country") Country
+          .dropdown
+            button(
+              class="btn btn-secondary btn-block dropdown-toggle",
+              type="button",
+              id="ddCountry",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false"
+            ) Select Country
+            div(id="ddCountry-menu", class="dropdown-menu", aria-labelledby="ddCountry")
+              //- List Country Option
+          input(
+            id="country",
+            name="country",
+            type="hidden",
+            class="form-control",
+            placeholder="country",
+            value= data.country,
+          )
+      .col
+        .form-group
+          label(for="img") Image
+          input(
+            id="img",
+            name="img",
+            type="text",
+            class="form-control",
+            placeholder="Image Url",
+            value= data.img,
+          )
+
+        .form-group
+          label(for="website") Website
+          input(
+            id="website",
+            name="website",
+            class="form-control",
+            placeholder="Website",
+            value= data.website
+          )
+
+        .form-group
+          label(for="facebook") Facebook
+          input(
+            id="facebook",
+            name="facebook",
+            class="form-control",
+            placeholder="Facebook",
+            value= data.facebook
+          )
+
+        .form-group
+          label(for="instagram") Instagram
+          input(
+            id="instagram",
+            name="instagram",
+            class="form-control",
+            placeholder="Instagram",
+            value= data.instagram
+          )
+
+        .form-group
+          label(for="youtube") Youtube
+          input(
+            id="youtube",
+            name="youtube",
+            class="form-control",
+            placeholder="Youtube",
+            value= data.youtube
+          )
+
+    .row
+      .form-group.col-9
+        label(for="about") About
+        textarea(
+          id="about",
+          name="about",
+          rows="3"
+          class="form-control",
+          placeholder="About"
+        ) #{data.about}
+      .col-3.text-center
+        p Avatar Preview
+        img(
+          class="rounded-circle",
+          width="200",
+          height="200",
+          src= data.img
+        )
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts

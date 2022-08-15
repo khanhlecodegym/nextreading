@@ -1,0 +1,84 @@
+extends ../_default/base.pug
+
+block main
+  .container.flex.flex-center
+    .col-2
+      h1.heading.heading-section.text-center Create a free new account
+      form(id="signUp", method="POST")
+        div.form-group
+          label(for="email") Email address (
+            span.text-error *
+            | )
+          input(
+            id="email",
+            name="email",
+            type="email",
+            class="form-control",
+            aria-describedby="emailHelp",
+            placeholder="your@example.com"
+          )
+          small(
+            id="emailHelp",
+            class="form-text text-light"
+          ) We'll never share your email with anyone else.
+
+        div.form-group
+          label(for="username") Username (
+            span.text-error *
+            span.mr-06 )
+            small.text-light#validate-username-duplicate
+          input(
+            id="username",
+            name="username",
+            type="text",
+            class="form-control",
+            placeholder="Username"
+          )
+          small.text-light At least&nbsp;
+            span#validate-username-min 6 characters&nbsp;
+            | including&nbsp;
+            span#validate-username-type a lowercase letter and a number only.
+
+        div.form-group
+          label(for="password") Password (
+            span.text-error *
+            span.mr-06 )
+
+          input(
+            id="password",
+            name="password",
+            type="password",
+            class="form-control",
+            placeholder="Password"
+          )
+          .text-tiny.text-light At least&nbsp;
+            span#validate-pwd-min 6 characters.
+
+        p.text-center.text-small
+          | By clicking any of the Sign Up buttons,
+          | <br />I agree to the terms of service
+
+        button(
+          id="btnSubmit",
+          type="submit",
+          class="form-control btn btn-primary btn-login btn-disabled",
+          disabled
+        ) SIGN UP
+
+        .flex
+          span.divider
+          span.divider-text OR
+          span.divider
+
+        .form-control.form-group
+          .flex
+            +imageTemplate('/img/logo-fb.svg', 'icon mr-06', 'Facebook', '24', '24')
+            a(href="/auth/facebook") Sign up with Facebook
+        .form-control.form-group
+          .flex
+            +imageTemplate('/img/logo-tw.svg', 'icon mr-06', 'Twitter', '24', '24')
+            a(href="/auth/twitter") Sign up with Twitter
+        .form-control.form-group
+          .flex
+            +imageTemplate('/img/logo-gg.svg', 'icon mr-06', 'Google', '24', '24')
+            a(href="/auth/google") Sign up with Google

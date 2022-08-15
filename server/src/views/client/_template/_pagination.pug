@@ -1,0 +1,42 @@
+mixin paginationTemplate(pageUrl, totalItems = 10, page = 1, sort='newest')
+  -var PAGINATION_REVIEWS = 10; // The same with Backend constants
+  -var DISPLAY_CLOSE_ITEMS = 2;
+  -var currentPage = Number(page);
+  -var maxPage = Number(Math.floor(totalItems / PAGINATION_REVIEWS));
+  -var i = 1;
+  -if (totalItems % PAGINATION_REVIEWS > 0)
+    -maxPage = maxPage + 1;
+
+  .pagination
+    //- Prev btn
+    -if (currentPage >= 2)
+      a.pagination-item(
+        href= `${pageUrl}?page=${currentPage-1}&sort=${sort}`,
+        title= `Go to page ${currentPage-1}`,
+      ) Prev
+
+    //- Pagination btn
+    while i <= maxPage
+      -var firstOrLast = (i === 1 || i === maxPage)
+      -var prevPages = i <= currentPage && currentPage <= DISPLAY_CLOSE_ITEMS + i
+      -var nextPages = i >= currentPage && currentPage >= i - DISPLAY_CLOSE_ITEMS
+      -var prevNone = currentPage - i === (DISPLAY_CLOSE_ITEMS + 1)
+      -var nextNone = currentPage + DISPLAY_CLOSE_ITEMS === (i - 1)
+
+      -if (prevPages || nextPages || firstOrLast)
+        a(
+          href= `${pageUrl}?page=${i}&sort=${sort}`,
+          title= `Go to page ${i}`,
+          class= `pagination-item ${i === currentPage ? 'pagination-item-active' : ''}`
+        ) #{i}
+      -else
+        -if (prevNone || nextNone)
+          span.pagination-item.pagination-item-none ...
+      - i++
+
+    //- Next btn
+    -if (currentPage !== maxPage)
+      a.pagination-item(
+        href= `${pageUrl}?page=${currentPage+1}&sort=${sort}`,
+        title= `Go to page ${currentPage+1}`,
+      ) Next

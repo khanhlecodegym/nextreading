@@ -1,0 +1,293 @@
+$cover-padding: 30px;
+$cover-padding-top: $header-height;
+
+/* Book Page layout */
+.page-book {
+  // Clear Header spacing
+  padding-top: 0;
+}
+
+.book {
+  &-info {
+    @media screen and (min-width: $tablet) {
+      display: grid;
+      grid-gap: 30px;
+      grid-template-columns: 1fr 300px;
+    }
+  }
+
+  &-suggestion {
+    @media screen and (max-width: $desktop) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-item {
+      @media screen and (min-width: $desktop) {
+        &:nth-child(odd) {
+          margin-right: $space-normal;
+        }
+      }
+
+      @media screen and (max-width: $tablet) {
+        img {
+          width: 80px;
+          height: 112px;
+        }
+      }
+    }
+  }
+}
+
+.book-content {
+  padding: 20px 0;
+  display: grid;
+  grid-gap: 40px;
+
+  @media screen and (min-width: $desktop) {
+    grid-template-columns: 200px 1fr 200px;
+
+    // Push content sidebar and ads float to left and right screen
+    max-width: calc(100% - 20px);
+  }
+}
+
+// Review content section
+.book-review {
+  display: grid;
+  grid-gap: $space-small;
+  grid-template-areas:
+    "book-review-user book-review-rating"
+    "book-review-score book-review-content";
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 50px 1fr;
+}
+.book-review-user {
+  grid-area: book-review-user;
+}
+.book-review-rating {
+  grid-area: book-review-rating;
+
+  @media screen and (min-width: $tablet) {
+    display: flex;
+    align-items: center;
+  }
+}
+.book-review-score {
+  grid-area: book-review-score;
+}
+.book-review-content {
+  grid-area: book-review-content;
+}
+/* End Book detail page layout */
+
+/* End Book Page layout */
+// Cover section
+.book-cover {
+  overflow: hidden;
+  position: relative;
+  padding-top: $cover-padding-top;
+
+  &-bg {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+    z-index: -1;
+    -webkit-filter: blur(25px) brightness(.5);
+    filter: blur(25px) brightness(.5);
+    width: calc(100% + #{$cover-padding * 4});
+    height: calc(100% + #{$cover-padding * 4});
+    margin: -120px ($cover-padding * -2);
+    position: absolute;
+  }
+}
+
+// Sidebar section
+.book-sidebar {
+  position: sticky;
+  top: $space-normal;
+  margin: 0 auto;
+
+  @media screen and (min-width: $tablet) {
+    margin-top: $space-small;
+  }
+}
+
+.book {
+  // Rating section
+  &-action {
+    font-size: 1rem;
+    text-align: center;
+    display: inline-table;
+    color: var(--text-color);
+
+    @media screen and (max-width: $tablet) {
+      margin-top: $space-normal;
+    }
+
+    p {
+      margin: $space-small 0;
+    }
+
+    &-section {
+      padding: $space-tiny 0;
+      border-radius: 0;
+    }
+
+    &-review {
+      border-radius: $radius-normal $radius-normal 0 0;
+      background-color: var(--primary-color);
+      color: var(--text-color-revert);
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    // Rating pure CSS trick: https://stackoverflow.com/a/27993987
+    &-rating {
+      padding: 0 50px 10px;
+      max-width: 300px;
+
+      .icon {
+        width: 20%; // 5 stars icon
+        font-size: 32px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &-rated {
+          color: var(--warning-color);
+        }
+      }
+
+      &:hover {
+        .icon {
+          color: var(--warning-color);
+
+          &:hover {
+            cursor: pointer;
+
+            ~ svg.icon {
+              color: var(--text-secondary-color);
+            }
+          }
+        }
+      }
+
+      &-modal {
+        padding: 0;
+        color: var(--text-secondary-color);
+
+        .icon {
+          width: 18px;
+        }
+      }
+    }
+  }
+
+  &-meta {
+    color: var(--text-color-revert);
+    @media screen and (max-width: $desktop) {
+      text-align: center;
+    }
+
+    &-desc {
+      text-align: left;
+      white-space: break-spaces;
+    }
+  }
+
+  &-intro {
+    @media screen and (min-width: $desktop) {
+      display: flex;
+    }
+  }
+
+  &-aff {
+    &-link {
+      display: flex;
+      align-items: center;
+      padding: $space-tiny $space-small;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// Review section
+.book-review {
+  padding-bottom: $space-large;
+
+  @media screen and (min-width: $tablet) {
+    margin-top: $space-small;
+  }
+
+  @media screen and (max-width: $tablet) {
+    margin-left: -1 * $space-small;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid hsla(0,0%,0%,.25); // Light mode
+    // border: 1px solid hsla(0,0%,100%,.25); // Dark mode
+  }
+
+  &-rating-value {
+    display: flex;
+    margin-left: $space-tiny;
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  &-score {
+    &-wrapper {
+      position: sticky;
+      top: $space-small;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &-content {
+    h1, h2, h3, p {
+      margin: 0 0 10px;
+      padding: 0;
+    }
+
+    blockquote {
+      background: #F5F5F5;
+      font-style: italic;
+      color: #555;
+      padding: $space-small $space-small $space-small $space-normal;
+      border-left: 4px solid var(--primary-color);
+      margin: 0 0 $space-small;
+    }
+  }
+}
+
+// Share / Edit action
+.book-review-anchors {
+  .item {
+    margin-right: $space-small;
+    display: inline-block;
+  }
+  
+  &-share {
+    position: relative;
+  }
+}

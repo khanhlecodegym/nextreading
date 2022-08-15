@@ -1,0 +1,39 @@
+.banner {
+  margin-bottom: $space-normal;
+  display: block;
+  border: 1px solid var(--divider-color);
+  border-radius: $radius-normal;
+  text-align: center;
+
+  &-only {
+    border-bottom-right-radius: $radius-normal;
+    border-bottom-left-radius: $radius-normal;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    border-top-left-radius: $radius-normal;
+    border-top-right-radius: $radius-normal;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  &-finhay {
+    background-color: #00B935;
+    color: #FFF;
+    padding: 20px 10px;
+
+    img {
+      width: calc(100% - 30px);
+      background: white;
+      border-radius: 40px;
+      padding: 5px 15px;
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+}

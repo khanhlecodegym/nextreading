@@ -1,0 +1,106 @@
+mixin userTemplate(isAmp=false)
+  -var defaultUserImg = '/img/placeholder-user.svg'
+  -var defaultBookImg = '/img/placeholder-book.svg'
+  -var monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  -var userId = user && user.id;
+  -var allowRating = userId === userProfile.id;
+
+  include ../_components/_modal-activity.pug
+
+  .container
+    .page
+      .text-center
+        div
+          +imageTemplate(
+            `${userProfile.img || defaultUserImg}`,
+            'img-user', title, '200', '200', isAmp,
+          )
+
+      .page-content
+        h1.heading.heading-page= userProfile.name || userProfile.username
+        p.text-small.text-primary
+          a(href='', title=`${userProfile.name || userProfile.username} on NextReading`) #{BASE_URL}/user/#{userProfile.username}
+
+        .icon-social.flex
+          +socialNetworkTemplate(
+            userProfile.twitter,
+            userProfile.facebook,
+            userProfile.instagram,
+            userProfile.youtube,
+          )
+
+        - if (userProfile.about)
+          p= userProfile.about
+
+    - if (currentReading.length)
+      h2.heading.heading-section.border-btm Currently Reading
+      .list-book.list-book-user
+        each item, idx in currentReading
+          a(href=`/book/${item.slug}`, title= item.title)
+            +imageTemplate(
+              `${item.img || defaultBookImg}`,
+              'img img-list', item.title, '160', '240', isAmp,
+            )
+
+    //- Ad unit: NextReading - UserDetail - Section
+    //- .text-center
+    //-   ins(class="adsbygoogle", style="display:block", data-ad-client="ca-pub-0374760140114293", data-ad-slot="1702891882", data-ad-format="auto", data-full-width-responsive="true")
+
+    h2.heading.heading-section Reading Journey
+    .table-diary.table-diary-head.text-small
+      span Month
+      span Day
+      span Book
+      span
+      span.table-diary-head-hide Rating
+      //- span.table-diary-head-hide Reread
+      span Edit
+
+    each item, idx in ratings
+      -var datetimeArr = item.finishDate.split('-') //- format: YYYY-MM-DD
+      -if (idx > 0)
+        -var prevDatetimeArr = ratings[idx-1].finishDate.split('-')
+      -else
+        -var prevDatetimeArr = []
+
+      .table-diary.heading.heading-item
+        //- Group by month
+        -if (datetimeArr[1] !== prevDatetimeArr[1])
+          .calendar.tmonth
+            span.calendar-year #{datetimeArr[0]}
+            span #{monthShort[Number(datetimeArr[1] - 1)]}
+        -else
+          div.tmonth
+        span.tday #{datetimeArr[2]}
+        span.timage
+          a(href=`/book/${item.bookId.slug}`, title= item.bookId.title)
+            +imageTemplate(
+              `${item.bookId.img || defaultBookImg}`,
+              'img img-table', item.bookId.title, '40', '60', isAmp,
+            )
+        div.table-diary-title.tname.text-ellipsis
+          a(href=`/book/${item.bookId.slug}`, title= item.bookId.title)
+            | #{item.bookId.title}
+        span.trating
+          +ratingTemplate(allowRating, item.bookId._id, Number(item.value))
+        //- span.heading-section.treread
+          //- TODO: Check reread condition
+          //- svg(class="icon")
+          //-   use(xlink:href="#icon-reread")
+        span.tedit
+          svg(
+            class=`icon icon-edit btn-action`,
+            fill="currentColor",
+            data-name="modal",
+            data-id="modalActivity",
+            data-book-id= item.bookId._id,
+            data-book-name= item.bookId.title,
+            data-book-start-date= item.startDate,
+            data-book-finish-date= item.finishDate,
+            data-book-score= Number(item.value),
+          )
+            use(xlink:href=`#icon-edit`)
+
+    //- Ad unit: NextReading - UserDetail - Section
+    //- .text-center
+    //-   ins(class="adsbygoogle", style="display:block", data-ad-client="ca-pub-0374760140114293", data-ad-slot="1702891882", data-ad-format="auto", data-full-width-responsive="true")

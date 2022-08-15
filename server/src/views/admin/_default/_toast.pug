@@ -1,0 +1,22 @@
+//- Toast message
+div(
+  id="toast-message"
+  role="alert",
+  aria-live="assertive",
+  aria-atomic="true",
+  class="toast",
+  data-autohide="true"
+  data-delay="2000"
+  style="position: fixed; top: 60px; right: 1rem;"
+)
+  #toast-header.toast-header.bg-success
+    strong.mr-auto.text-white Success alert
+    button(
+      type="button",
+      class="text-white ml-2 mb-1 close",
+      data-dismiss="toast",
+      aria-label="Close"
+    )
+      span(aria-hidden="true") &times;
+  #toast-body.toast-body.bg-success
+    #toast-content.text-white This is a toast message!

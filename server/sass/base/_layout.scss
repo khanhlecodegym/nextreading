@@ -1,0 +1,73 @@
+html {
+  overscroll-behavior-y: none;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+
+  @media screen and (min-width: 1200px) {
+    max-width: 1160px;
+  }
+  @media screen and (max-width: 1200px) {
+    max-width: calc(100vw - 30px);
+  }
+  @media screen and (max-width: $phone) {
+    max-width: calc(100vw - 20px);
+  }
+}
+
+// Home, Category and Listing pages
+.wrapper {
+  display: grid;
+  min-height: 100vh;
+
+  // Header is over layer similar to fixed position
+  grid-template-rows: 0 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+
+.header {
+  grid-area: header;
+  z-index: 2;
+  height: $header-height;
+  background-color: transparent;
+}
+.main {
+  grid-area: main;
+  position: relative;
+  // Clear Header styles
+  padding-top: $header-height;
+}
+.footer {
+  grid-area: footer;
+}
+
+.page {
+  display: grid;
+  grid-gap: $space-normal;
+  padding: $space-normal 0;
+
+  @media screen and (min-width: $desktop) {
+    grid-gap: $space-super-large;
+    grid-template-columns: $page-sidebar-width 1fr;
+  }
+}
+
+// Header layout
+.logo {
+  grid-area: logo;
+}
+.search {
+  grid-area: search;
+}
+.menu-icon {
+  grid-area: menu;
+
+  @media screen and (min-width: $tablet) {
+    display: none;
+  }
+}

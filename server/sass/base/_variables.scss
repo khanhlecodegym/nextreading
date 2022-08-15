@@ -1,0 +1,81 @@
+/* Theme colors */
+$primary-color: #f48024;
+$primary-light-color: #f09f5e;
+$primary-lighter-color: #ebbc97;
+$success-color: #4caf50;
+$error-color: #f44336;
+$warning-color: #ffc107;
+$link-color: #0077cc;
+
+$body-bg-color: #fff;
+$body-bg-color-dark: #242526;
+$section-bg-color: #f0f2f5;
+$section-bg-color-dark: #18191a;
+$text-color: #2f363d;
+$text-color-dark: #e4e6eb;
+$text-color-revert: $text-color-dark;
+$text-color-revert-dark: $text-color;
+$text-secondary-color: #959da5;
+$text-secondary-color-dark: #b0b3b8;
+$text-placeholder-color: #e1e1e1;
+$text-placeholder-color-dark: #181818;
+$divider-color: #ced0d4;
+$divider-color-dark: #3e4042;
+
+// Old colors
+$text-color-light: #65676b;
+$text-color-light-dark: #b0b3b8;
+$shadow-color: #00000033;
+$shadow-color-dark: #ffffff33;
+$placeholder-color: #00000066;
+$placeholder-color-dark: #ffffff66;
+$modal-bg-color: rgba(0,0,0,.5);
+$modal-bg-color-dark: rgba(255,255,255,.5);
+
+/* Breakpoint */
+$phone: 400px; // Default is 375px
+$tablet: 768px + 1px; // Tablet breakpoint
+$desktop: 1024px + 1px; // Laptop breakpoint
+
+/* Metrics */
+$space-tiny: 5px;
+$space-small: 10px;
+$space-normal: 20px;
+$space-large: 30px;
+$space-super-large: 40px;
+
+/* Typography */
+/**
+ * Use system-fonts for performance and native UI
+ * https://meta.stackexchange.com/q/364048
+ * https://markdotto.com/2018/02/07/github-system-fonts/
+ **/
+$font-size-base: 18px;
+$font-family:
+  system-ui, -apple-system, BlinkMacSystemFont, // San Francisco on macOS and iOS
+  "Segoe UI", // Windows
+  "Ubuntu", // Ubuntu
+  "Roboto", "Noto Sans", "Droid Sans", // Chrome OS and Android with fallbacks
+  sans-serif; // The final fallback for rendering in sans-serif.
+$font-weight-bold: 600;
+$font-weight-bold-light: 500;
+$font-weight-bold-super: 700;
+
+/* Icon */
+$icon-size-small: 12px;
+$icon-size-normal: 24px;
+$icon-size-large: 48px;
+
+/* Radius */
+$radius-small: 4px;
+$radius-normal: 8px;
+$radius-large: 16px;
+
+/* Page Layout Styles */
+$header-height: 60px;
+$navigation-item-height: 40px;
+$page-sidebar-width: 200px;
+
+/* Animation */
+$easing: ease-out;
+$speed: 0.5s;

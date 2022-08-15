@@ -1,0 +1,61 @@
+.form-row
+  //- Calculating rating system
+  - var ratingAVG = 0
+  - var ratingTotal = 0
+  - var totalRating = data.totalRating || [0, 0, 0, 0, 0]
+  each item in totalRating
+    - ratingTotal += item
+  each item, index in totalRating
+    - ratingAVG += ((index +1) * item)/ratingTotal
+
+  .form-group.col-3
+    label(for="increase-views") Views
+    input(
+      id="views",
+      name="views",
+      type="text",
+      class="form-control",
+      value= data.views || 1,
+    )
+
+  .form-group.col-3
+    label(for="ratingTotal") Total Rating
+    input(
+      id="ratingTotal",
+      type="text",
+      class="form-control",
+      value= ratingTotal,
+      disabled
+    )
+  .form-group.col-3
+    label(for="ratingAVG") Rating AVG
+    input(
+      id="ratingAVG",
+      type="text",
+      value= ratingAVG,
+      class="form-control",
+      placeholder="Rating AVG",
+      disabled
+    )
+
+  .form-group.col-3
+    label(for="favorites") Favorites
+    input(
+      id="favorites",
+      type="text",
+      value= data.favorites,
+      class="form-control",
+      placeholder="Total Favorite"
+    )
+
+.form-row
+  each item, index in data.totalRating || [0, 0, 0, 0, 0]
+    .form-group.col
+      label(for="increase-favorites") #{index + 1} Star
+      input(
+        value= item,
+        name= `totalRating[${index}]`,
+        type="number",
+        class="form-control",
+        placeholder="Total Rating",
+      )

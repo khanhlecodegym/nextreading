@@ -1,0 +1,32 @@
+.card {
+  border: 1px solid var(--divider-color);
+  border-radius: $radius-normal;
+  background-color: var(--body-bg-color);
+  // box-shadow: 0 1px 2px var(--shadow-color);
+
+  @media screen and (max-width: $tablet) {
+    padding: $space-small;
+  }
+  @media screen and (min-width: $tablet) {
+    padding: $space-normal;
+  }
+
+  &-full {
+    padding: 0;
+  }
+
+  &-header {
+    border-radius: $radius-normal $radius-normal 0 0;
+    background-color: var(--divider-color);
+    padding: $space-tiny $space-small;
+  }
+
+  &-body {
+    @media screen and (max-width: $tablet) {
+      padding: $space-small;
+    }
+    @media screen and (min-width: $tablet) {
+      padding: $space-small $space-normal;
+    }
+  }
+}

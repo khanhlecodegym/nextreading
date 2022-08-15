@@ -1,0 +1,19 @@
+mixin searchInputTemplate(isGlobal=false)
+  div(
+    class=`search-wrapper ${isGlobal ? 'search-global-wrapper' : ''}`
+  )
+    div(class=`search ${isGlobal ? 'search-global' : 'search-home'}`)
+      svg(class="icon search-icon", fill="currentColor")
+        use(xlink:href="#icon-search")
+      input(
+        id="input-search",
+        class=`search-input  ${isGlobal ? '' : 'search-home-input'}`,
+        placeholder=`${isGlobal
+          ? 'Search book...'
+          : 'Book title (eg. "The Vanishing Half" or "A Promised Land"...)'}`
+      )
+
+    div(
+      id="search-results",
+      class=`hidden search-results ${isGlobal ? 'search-global-results' : ''}`
+    )

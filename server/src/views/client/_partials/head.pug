@@ -1,0 +1,50 @@
+meta(charset="utf-8")
+meta(name="renderer", content="webkit")
+meta(name="viewport", content="width=device-width, minimum-scale=1, initial-scale=1")
+
+//- Setup meta data based on template type
+block metadata
+- var seoTitle = metaPageTitle || SITE_TITLE
+- var seoDesc = metaPageDesc || SITE_DESC
+- var contentType = metaContentType || "website"
+- var pageImage = metaPageImage || `${BASE_URL}/${SITE_LOGO}`
+- var permalink = metaCanonical || `${BASE_URL}`
+
+title #{seoTitle || SITE_TITLE}
+meta(name="description", content= seoDesc || SITE_DESC)
+
+//- Permalink & RSSlink
+link(rel="canonical", href= permalink)
+- if (metaAMPLink)
+  link(rel="amphtml", href= metaAMPLink)
+
+//- SEO Prefs
+- if (noneContentPage)
+  meta(name="robots", content="noindex,nofollow")
+- else
+  meta(name="robots", content="index,follow")
+meta(name="referrer", content="origin-when-cross-origin")
+meta(name="yandex-verification", content="75f0a2f2ee1ff346")
+
+//- Twitter Card
+meta(name="twitter:card", content="summary_large_image")
+meta(name="twitter:site", content="@nextreading")
+meta(name="twitter:title", content= seoTitle)
+meta(name="twitter:description", content= seoDesc)
+meta(name="twitter:image", content= pageImage)
+meta(name="twitter:creator", content="@nextreading")
+
+//- Open Graph Meta Tags
+meta(property="og:url", content= permalink)
+meta(property="og:type", content= contentType)
+meta(property="og:title", content= seoTitle)
+meta(property="og:description", content= seoDesc)
+meta(property="og:image", content= pageImage)
+meta(property="og:site_name", content= seoDesc)
+
+//- SEO purpose: schema markup
+block schemaMarkup
+
+//- Favicon and Touch icons
+link(rel="icon", type="image/png", href="/img/favicon.png")
+meta(name="theme-color", content="#F48024")

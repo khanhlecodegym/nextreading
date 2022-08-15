@@ -1,0 +1,63 @@
+-if (affiliate && affiliate._id)
+  .card.card-full
+    h3.card-header.heading.heading-item Where To Buy
+    - if (affiliate.fahasa)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.fahasa,
+        title= `Buy book ${title} on Fahasa`,
+        rel="nofollow",
+        target="_blank"
+      )
+        +imageTemplate('/img/logo-fahasa.jpg', 'img-aff', 'Buy on Fahasa', '24', '24', isAmp)
+        | Fahasa
+    - if (affiliate.vinabook)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.vinabook,
+        title= `Buy book ${title} on VinaBook`,
+        rel="nofollow",
+        target="_blank"
+      )
+        +imageTemplate('/img/logo-vinabook.jpg', 'img-aff', 'Buy on VinaBook', '24', '24', isAmp)
+        | VinaBook
+    - if (affiliate.tiki)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.tiki,
+        title= `Buy book ${title} on Tiki`,
+        target="_blank",
+        rel="nofollow",
+      )
+        +imageTemplate('/img/logo-tiki.jpg', 'img-aff', 'Buy on Tiki', '24', '24', isAmp)
+        | Tiki
+    - if (affiliate.lazada)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.lazada,
+        title= `Buy book ${title} on Lazada`,
+        rel="nofollow",
+        target="_blank"
+      )
+        +imageTemplate('/img/logo-lazada.jpg', 'img-aff', 'Buy on Lazada', '24', '24', isAmp)
+        | Lazada
+    - if (affiliate.shopee)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.shopee,
+        title= `Buy book ${title} on Shopee`,
+        rel="nofollow",
+        target="_blank"
+      )
+        +imageTemplate('/img/logo-shopee.jpg', 'img-aff', 'Buy on Shopee', '24', '24', isAmp)
+        | Shopee
+    - if (affiliate.amazon)
+      a(
+        class="book-aff-link border-btm",
+        href= affiliate.amazon,
+        title= `Buy book ${title} on Amazon`,
+        rel="nofollow",
+        target="_blank"
+      )
+        +imageTemplate('/img/logo-amazon.jpg', 'img-aff', 'Buy on Tiki', '24', '24', isAmp)
+        | Amazon

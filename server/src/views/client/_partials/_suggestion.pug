@@ -1,0 +1,8 @@
+h3.heading.heading-item.mt20 Readers also enjoyed
+.book-suggestion.mt10
+  each item in relatedBooks
+    a.book-suggestion-item(href=`/book/${item.slug}`, title= item.title)
+      +imageTemplate(
+        `${item.img || defaultBookImg}`,
+        'img img-suggestion', item.title, '90', '124', isAmp,
+      )

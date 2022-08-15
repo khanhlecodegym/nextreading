@@ -1,0 +1,15 @@
+mixin ratingTemplate(allowRating, bookId, score)
+  -var i = 1;
+  -var maxScore = 5;
+
+  - if (score >= 0)
+    while i <= maxScore
+      svg(
+        class=`${allowRating ? 'btn-action' : ''} icon icon-rating ${score >= i ? 'icon-rated' : ''}`,
+        fill="currentColor",
+        data-name="rating-value",
+        data-value= i,
+        data-id= bookId
+      )
+        use(xlink:href=`#icon-star-full`)
+      - i++

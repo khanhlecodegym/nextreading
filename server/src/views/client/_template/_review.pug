@@ -1,0 +1,90 @@
+mixin reviewTemplate(item, voted=false, isAmp=false)
+  -var defaultUserImg = '/img/placeholder-user.svg'
+  -var isCurrentUserReview = false
+  -if (user && user.id)
+    -isCurrentUserReview = item.userId._id.toString() === user.id.toString()
+
+  .book-review.border-btm
+    .book-review-user.flex.flex-center
+      +imageTemplate(
+        `${item.userId.img || defaultUserImg}`,
+        'book-review-avatar',
+        'User avatar',
+        "40",
+        "40",
+        isAmp,
+        "responsive"
+      )
+    div.book-review-rating
+      | Reviewed by&nbsp;
+      -var displayName = item.userId.name || item.userId.username
+      a.heading(
+        href=`/user/${item.userId.username}`,
+        title=`View ${displayName}'s Profile`,
+      )= displayName
+      .book-meta-rating.book-review-rating-value
+        +ratingTemplate(false, '', item.rated > 0 ? item.rated : -1)
+    div.book-review-score
+      .book-review-score-wrapper
+        svg(
+          class= `btn-action icon-vote ${voted ? 'icon-vote-active' : ''}`,
+          fill="currentColor",
+          data-name="vote",
+          data-value= `${isCurrentUserReview ? '' : item._id}`,
+        )
+          use(xlink:href="#icon-vote")
+        span.heading.heading-item #{item.score || 0}
+    div.book-review-content
+      div(id=`${isCurrentUserReview ? item._id : ''}`)!= item.content
+
+      -if (item.refer && item.referUrl)
+        p Copyright:&nbsp;
+          a(
+            href= item.referUrl,
+            target="_blank",
+            title="Review source",
+            rel="nofollow",
+            class="text-primary",
+          )= item.refer
+      div.book-review-anchors
+        .item.book-review-anchors-share
+          -var sharePopperId = `shareReview${item._id}`
+          -var popperShareReviewClass = 'popper-share-review';
+          -var inputShareId = `shareInput${item._id}`
+
+          //- Share btn
+          a.text-light.btn-display(
+            href="#!",
+            title="Short permalink to this review",
+            data-id= sharePopperId,
+            data-class= popperShareReviewClass,
+            data-select= inputShareId
+          ) Share
+
+          //- Share review popper
+          div(
+            class= `popper hidden ${popperShareReviewClass}`
+            id= sharePopperId
+          )
+            .popper-arr
+            p.text-small Share a link to this review
+            input.input(
+              id= inputShareId,
+              value= `${BASE_URL}/r/${item.counting}`
+            )
+            .popper-option.mt10.flex.flex-between
+              button.btn.btn-text.btn-copy.text-link.text-small(
+                data-id= inputShareId
+              ) Copy link
+              //- TODO: Social networks
+
+        //- Edit btn
+        -if (isCurrentUserReview)
+          a.item.text-light(
+            href="#!",
+            id="btnEditReview",
+            title="Edit review",
+            data-id= item._id
+          ) Edit
+
+

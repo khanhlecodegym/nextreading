@@ -1,0 +1,157 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+  .container
+    a(
+      class="navbar-brand",
+      href=""
+    ) Dashboard
+    button(
+      class="navbar-toggler",
+      type="button",
+      data-toggle="collapse",
+      data-target="#navbarNav",
+      aria-controls="navbarNav",
+      aria-expanded="false",
+      aria-label="Toggle navigation"
+    )
+      span.navbar-toggler-icon
+
+    #navbarNav.collapse.navbar-collapse
+      ul.navbar-nav.mr-auto
+        li.nav-item.d-flex.flex-column.justify-content-center.dropdown
+          a(class="nav-link", href="/")
+            i.fa.fa-home.fa-lg
+        li.nav-item.d-flex.flex-column.justify-content-center.dropdown
+          a(
+            class="badge badge-pill badge-success d-flex align-items-center nav-link dropdown-toggle text-white px-3 py-2",
+            href="#",
+            role="button",
+            id="navbarDropdownAdd",
+            data-toggle="dropdown",
+            aria-haspopup="true",
+            aria-expanded="false",
+          )
+            i.fa.fa-plus.mr-2
+            | Add
+          div(
+            class="dropdown-menu",
+            aria-labelledby="navbarDropdownAdd",
+          )
+            a(class="dropdown-item", href="book/create")
+              i.fa.fa-book.mr-2
+              | Book
+            a(class="dropdown-item", href="author/create")
+              i.fa.fa-user.mr-2
+              | Author
+        li.nav-item
+          a(class="nav-link", href="book")
+            i.fa.fa-book.mr-1
+            | Book
+        li.nav-item
+          a(class="nav-link", href="review")
+            i.fa.fa-commenting.mr-1
+            | Review
+        li.nav-item
+          a(class="nav-link", href="author")
+            i.fa.fa-user.mr-1
+            | Author
+
+        //- Moderator
+        - if (user.role < 2)
+          li.nav-item.dropdown
+            a(
+              class="nav-link dropdown-toggle",
+              href="#",
+              role="button",
+              id="navbarDropdownModerator",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false",
+            )
+              i.fa.fa-user-md.mr-1
+              | Moderator
+
+            div(
+              class="dropdown-menu",
+              aria-labelledby="navbarDropdownModerator",
+            )
+              a(class="dropdown-item", href="badge") Badge
+              a(class="dropdown-item", href="userbadge") User Badge
+              a(class="dropdown-item", href="vote") Vote
+              a(class="dropdown-item", href="rating") Rating
+
+        //- Admin
+        - if (user.role < 1)
+          li.nav-item.dropdown
+            a(
+              class="nav-link dropdown-toggle",
+              href="#",
+              role="button",
+              id="navbarDropdownAdmin",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false",
+            )
+              i.fa.fa-user-secret.mr-1
+              | Admin
+
+            div(
+              class="dropdown-menu",
+              aria-labelledby="navbarDropdownAdmin",
+            )
+              //- Daily Action group
+              a(class="dropdown-item", href="report/new-book-urls")
+                i.fa.fa-anchor.mr-1
+                | New urls
+              a(class="dropdown-item", href="scraping-url")
+                i.fa.fa-link.mr-1
+                | Scraping Urls
+              a(class="dropdown-item", href="scraping-content")
+                i.fa.fa-database.mr-1
+                | Scraping Content
+
+              //- Report Group
+              .dropdown-divider
+              a(class="dropdown-item", href="affiliate")
+                i.fa.fa-shopping-cart.mr-1
+                | Affiliate
+              a(class="dropdown-item", href="report")
+                i.fa.fa-bar-chart.mr-1
+                | Report
+              a(class="dropdown-item", href="user")
+                i.fa.fa-users.mr-1
+                | User
+
+              //- Data Group
+              .dropdown-divider
+              a(class="dropdown-item", href="user-activity")
+                i.fa.fa-gamepad.mr-1
+                | User Activity
+              a(class="dropdown-item", href="category")
+                i.fa.fa-address-book.mr-1
+                | Category
+              a(class="dropdown-item", href="clean")
+                i.fa.fa-wrench.mr-1
+                | Clean Data
+
+      ul.navbar-nav
+        li.nav-item
+          a(class="nav-link text-white", href=`/user/${user.username}`)
+            strong= user.username
+        li.nav-item
+          a(class="nav-link text-danger", href=`/logout`) Logout
+
+//- This JS only for admin for site settings
+script(type="text/javascript").
+  $(document).ready(function() {
+    $('body').on('click', '#btn-generate-sitemap', function() {
+      var apiUrl = 'api/generate-sitemap';
+
+      $.post(apiUrl, function () {})
+        .done(function() {
+          displayToast(true, 'Successfully generated sitemap.');
+        })
+        .fail(function() {
+          displayToast(false, 'Error generated sitemap!!!');
+        });
+    });
+  });

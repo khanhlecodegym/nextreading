@@ -1,0 +1,35 @@
+mixin reviewDetailTemplate(isAmp=false)
+  -var defaultBookImg = '/img/placeholder-book.svg';
+
+  include _review-modal.pug
+
+  //- This hidden input for Review content auto saving
+  input(id="bookSlug", type="hidden", value= slug)
+
+  .book-cover
+    .book-cover-bg(style={'background-image': `url(${img || defaultBookImg})`})
+
+  .container.book-content
+    //- Affiliate section
+    div
+      .book-sidebar
+        include ../_partials/_book-poster.pug
+        include ../_partials/_affiliate.pug
+        include ../_partials/_suggestion.pug
+
+    //- Review content
+    section.container
+      .book-review-section
+        h1.heading.heading-page #{title} review by #{review.userId.name || review.userId.username}
+          -if (!verified)
+            span(title=`${verified ? '' : 'Under verification'}`)
+              svg(class="icon icon-warning")
+                use(xlink:href="#icon-warning")
+
+        +reviewTemplate(review, voted, isAmp)
+
+    //- Banner
+    div
+      .book-sidebar
+        include ../_partials/_book-action.pug
+        include ../_partials/_ads-banner.pug

@@ -1,0 +1,16 @@
+extends _default/base.pug
+
+block metadata
+  - var metaPageTitle = seoTitle
+  - var metaPageDesc = seoDesc
+  - var metaContentType = "article"
+  - var metaPageImage = img
+  - var metaCanonical = `${BASE_URL}/author/${author.slug}`
+  - var metaAMPLink = `${BASE_URL}/amp/author/${author.slug}`
+
+block schemaMarkup
+  include ../_schema/schema-author.pug
+
+block main
+  include ../_template/author.pug
+  +authorTemplate(true)

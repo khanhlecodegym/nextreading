@@ -1,0 +1,33 @@
+script(type="text/javascript").
+  $(document).ready(function() {
+    function getEntityType() {
+      // Url format: ?type=[entity]&otherParams
+      var otherParams = window.location.href.split('type=');
+      var entityType = otherParams[1].split('&')[0];
+
+      return entityType;
+    }
+
+    $('body').on('click', '.btn-select-type', function() {
+      var originalType = getEntityType();
+      var type = $(this).data('type');
+
+      $('#selectedType').val(type);
+
+      // Disable pagination if change type
+      if (originalType !== type) {
+        $('.page-item').addClass('disabled');
+      }
+    });
+
+    $('body').on('click', '#btnApply', function() {
+      var type = $('#selectedType').val();
+      var startDate = $('#startDate').val();
+      var endDate = $('#endDate').val();
+
+      var redirectUrl = `report?type=${type}&startDate=${startDate}&endDate=${endDate}`;
+
+      // Auto redirect
+      //- window.location.href = redirectUrl;
+    });
+  });

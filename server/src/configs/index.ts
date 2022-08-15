@@ -1,0 +1,30 @@
+import {
+  ENVIRONMENT,
+  PORT,
+  BASE_URL,
+  S3_BUCKET,
+  S3_KEY,
+  S3_SECRET,
+} from './envVars';
+import {
+  SITE_NAME,
+  SITE_LOGO,
+  SITE_TITLE,
+  SITE_DESC,
+  SITE_NUMBER_PAGES,
+} from './siteConfigs';
+
+export {
+  ENVIRONMENT,
+  PORT,
+  BASE_URL,
+  S3_BUCKET,
+  S3_KEY,
+  S3_SECRET,
+
+  SITE_NAME,
+  SITE_LOGO,
+  SITE_TITLE,
+  SITE_DESC,
+  SITE_NUMBER_PAGES,
+};

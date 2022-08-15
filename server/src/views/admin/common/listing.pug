@@ -1,0 +1,134 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+  input(id="entity", type="hidden", value= entity)
+  .row
+    //- Pagination
+    .col-3
+      nav(aria-label="Page navigation example", class="text-center")
+        - var pagination = page || 1
+        - var paginationLink = entity
+
+        ul.pagination
+          li(class=`page-item ${page === 1 ? 'disabled' : ''}`)
+            a(
+              class="page-link",
+              href=`${paginationLink}?page=${+(pagination - 1)}&query=${query}&type=${type}`
+            ) Previous
+          li.page-item.active
+            a(class="page-link", href="javascript:;")= pagination
+          li(class=`page-item ${lastId === '' ? 'disabled' : ''}`)
+            a(
+              class="page-link",
+              href=`${paginationLink}?page=${+(pagination + 1)}&query=${query}&type=${type}`
+            ) Next
+
+    //- Search
+    .col-5
+      form(
+        method="GET",
+        action= `${entity}/`
+      )
+        .form-group
+          input(
+            type="text",
+            name="query"
+            value= query
+            class="form-control",
+            placeholder="Search"
+          )
+
+    //- Adding new Btn
+    .col-4.text-right
+      - if (entity === 'book')
+        - if (type)
+          a(
+            href=`${entity}`,
+            class="btn btn-secondary mr-4"
+          )
+            i.fa.fa-check-circle-o.mr-2
+            | Un-verified
+        - else
+          a(
+            href=`${entity}?type=verified`,
+            class="btn btn-primary mr-4"
+          )
+            i.fa.fa-check-circle-o.mr-2
+            | Verified
+      -var disableAddNewPages = ['rating', 'userActivity']
+      a(
+        href=`${entity}/create`,
+        class=`btn btn-success ${disableAddNewPages.includes(entity) ? 'disabled' : ''}`
+      )
+        i.fa.fa-plus.mr-2
+        | Add New
+
+  //- Special row based on entity
+  .row.mb-4
+    .col
+      -if (entity === 'scraping-url')
+        a.btn.btn-success.mr-2(href=`${entity}/run`) Run
+        a.btn.btn-success(href=`${entity}/submit`) Submit Urls
+
+  .row
+    .col
+      table.table.table-hover.table-bordered.table-responsive-md
+        thead
+          tr
+            th #
+            each val in headers
+              th(scope="col")= val.name
+        tbody
+          each item, tableIdx in data
+            tr(id=`row-id-${item.id}`)
+              td= tableIdx + 1
+
+              each it, idx in headers
+                if idx === headers.length - 1
+                  td
+                    a(
+                      href=`${entity}/${item.id}`,
+                      class=`btn btn-secondary ${entity === 'rating' ? 'disabled' : ''}`,
+                      role="button",
+                      aria-pressed="true"
+                    )
+                      i.fa.fa-pencil
+
+                    button(
+                      type="button",
+                      class="btn btn-danger btn-delete ml-2",
+                      data-id= item.id
+                      data-name= item.title || item.name
+                      data-toggle="modal",
+                      data-target="#deleteConfirmModal"
+                    )
+                      i.fa.fa-trash-o
+                    - if (entity === 'book')
+                      a(
+                        href= `review?bookId=${item.id}`,
+                        class="btn btn-secondary ml-2",
+                        role="button"
+                      )
+                        i.fa.fa-list
+                    - if (entity === 'author')
+                      a(
+                        href= `book?authorId=${item.id}`,
+                        class="btn btn-secondary ml-2",
+                        role="button"
+                      )
+                        i.fa.fa-book
+                else
+                  if it.status
+                    td.text-center
+                      if !!item[it.field]
+                        i.fa.fa-check-circle.text-success
+                      else
+                        i.fa.fa-times-circle.text-danger
+                  else if it.url
+                    td
+                      a(href= item[it.field])= item[it.field]
+                  else
+                    td= item[it.field]
+
+block scripts

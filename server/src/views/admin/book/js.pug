@@ -1,0 +1,154 @@
+script(type="text/javascript").
+  $(document).ready(function() {
+    var bookId = $("#id").val();
+    var bookName = $("#title").val();
+    var listLanguages = getLocalStorageData(STORAGE_KEY.LANGUAGES) || [];
+    var listCategories = getLocalStorageData(STORAGE_KEY.CATEGORIES) || [];
+    var isValidBookImg = false;
+
+    function selectCategory(selectedId, categoryName) {
+      var totalCategoryId = $(".input-categoryId").length;
+      var duplicatedId = false;
+
+      $(".input-categoryId").each(function() {
+        if ($(this).val() === selectedId) {
+          duplicatedId = true;
+        }
+      });
+
+      if (duplicatedId) {
+        return;
+      }
+
+        // Adding input id & name
+      $("#categories").append(
+        '<input class="form-control input-categoryId" '
+          + 'name="categoryIds['+ totalCategoryId +']" '
+          + 'value="' + selectedId + '" ' +
+        'type="hidden" placeholder="CategoryId" />'
+      );
+
+      // Display badge
+      $("#list-category").append(
+        '<span class="badge badge-pill badge-info ml-2">' + categoryName + '</span>'
+          + '<i class="fa fa-times ml-1 btn-remove-category" data-index="' + totalCategoryId + '"></i>'
+      );
+    };
+
+    function renderCategoryOptions() {
+      var listFiction = listCategories.filter(it => it.isFiction);
+      var listNonFiction = listCategories.filter(it => !it.isFiction);
+
+      renderDropdownOptions(listFiction, 'ddCategoryFiction', 'category', '');
+      renderDropdownOptions(listNonFiction, 'ddCategoryNonFiction', 'category', '');
+    };
+
+    function renderSelectedCategories() {
+      $(".input-categoryId").each(function() {
+        var categoryId = $(this).val();
+        var categoryIndex = $(this).data("index");
+        var selectedCategory = listCategories.find(item => item.id === categoryId);
+
+        if (!selectedCategory) {
+          return;
+        }
+
+        var categoryName = selectedCategory.name;
+        // Display badge
+        $("#list-category").append(
+          '<span class="badge badge-pill badge-info ml-2">' + categoryName + '</span>'
+          + '<i class="fa fa-times ml-1 btn-remove-category" data-index="' + categoryIndex + '"></i>'
+        );
+      })
+    };
+
+    function renderLanguageOptions() {
+      // Format data to mapping on dropdown
+      // Split to 2 drop down for common and other languages
+      var mostUsedLangs = listLanguages
+        .filter(it => it.mostUsed)
+        .map(it => ({
+          id: it.name,
+          name: it.name,
+        }));
+      var normalLangs = listLanguages
+        .filter(it => !it.mostUsed)
+        .map(it => ({
+          id: it.name,
+          name: it.name,
+        }));
+
+      renderDropdownOptions(mostUsedLangs, 'ddLanguage', 'language', '');
+      renderDropdownOptions(normalLangs, 'ddNormalLanguage', 'language', '');
+    }
+
+    function initBook() {
+      renderLanguageOptions();
+      renderCategoryOptions();
+      renderSelectedCategories();
+    };
+
+    $("#ddCategoryFiction-menu").on("click", ".btn-select", function() {
+      var categoryId = $(this).data("value");
+      var categoryName = $(this).text();
+
+      return selectCategory(categoryId, categoryName);
+    });
+
+    $("#ddCategoryNonFiction-menu").on("click", ".btn-select", function() {
+      var categoryId = $(this).data("value");
+      var categoryName = $(this).text();
+
+      return selectCategory(categoryId, categoryName);
+    });
+
+    $("#list-category").on("click", ".btn-remove-category", function() {
+      var categoryIdx = Number($(this).data("index"));
+
+      // Remove input Id
+      $(".input-categoryId").each(function() {
+        var inputIdx = parseInt($(this).attr('name').match(/\d+/), 10);
+
+        if (inputIdx === categoryIdx) {
+          $(this).remove();
+        }
+
+        if (inputIdx > categoryIdx) {
+          $(this).attr('name', 'categoryIds[' + Number(inputIdx - 1) + ']');
+        }
+      });
+
+      // Remove display badge
+      $(this).prev().remove();
+      $(this).remove();
+    });
+
+    $("#btn-add-new-author").click(function() {
+      if (confirm("Want to create new Author?")) {
+        var apiUrl = "api/add-new-author";
+        var authorName = $("#authorName").val().trim();
+
+        if (!authorName) {
+          displayToast(false, 'Author Name is empty!!!');
+        }
+
+        $.post(
+          apiUrl,
+          {
+            name: authorName
+          },
+          function (result) {
+            var { id } = result;
+            $("#authorId").val(id);
+            $("#ddAuthor").html(authorName);
+          }
+        ).done(function() {
+          displayToast(true, 'Successfully adding new Author.');
+        }).fail(function() {
+          displayToast(false, 'Error adding new Author!!!');
+        });
+      }
+    });
+
+    initBook();
+  });

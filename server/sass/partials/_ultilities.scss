@@ -1,0 +1,69 @@
+.flex {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+
+  &-default {
+    align-items: unset;
+  }
+
+  &-between {
+    justify-content: space-between;
+  }
+
+  &-center {
+    justify-content: center;
+  }
+}
+
+.hidden {
+  display: none;
+
+  &-mobile {
+    @media screen and (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  &-tablet {
+    @media screen and (min-width: $tablet + 1px) {
+      display: none;
+    }
+  }
+}
+
+.animation {
+  &-transform {
+    will-change: transform;
+    transition: transform 300ms ease 0s;
+  }
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+.border-btm {
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.m0 {
+  margin: 0;
+}
+.mt10 {
+  margin-top: 10px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.content {
+  &-hidden {
+    max-height: 200px;
+    overflow-y: hidden;
+    margin-bottom: $space-tiny;
+  }
+}

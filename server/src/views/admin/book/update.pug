@@ -1,0 +1,428 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+  input(id="entity", type="hidden", value= entity)
+  -var isModeratorRole = user.role < 2
+
+  form(
+    method="POST",
+    id="bookForm",
+    class="form-update",
+    action= `${entity}/${data.id ? 'update' : 'create'}`
+  )
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="id") Book ID
+            input(
+              id="id",
+              name="id",
+              type="text",
+              value=data.id,
+              class="form-control",
+              readonly
+            )
+
+          .form-group.col-5.text-right
+            - var isVerified = false
+              - if (typeof data.verified !== "undefined" && data.verified === true)
+                - isVerified = true
+
+            label Publish Status
+            .btn-group
+              button(
+                type="button",
+                class=`btn ${isVerified === false ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                data-target="verified",
+                data-value="0"
+              ) Draft
+              button(
+                type="button",
+                class=`btn ${isVerified === true ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                data-target="verified",
+                data-value="1"
+              )
+                i.fa.fa-check.mr-2
+                | verified
+            input(
+              id="verified",
+              name="verified",
+              type="hidden",
+              value=`${isVerified ? 1 : 0}`
+            )
+
+        .form-row
+          .form-group.col-7
+            label(for="originalId") Original Book ID
+            input(
+              id="originalId",
+              name="originalId",
+              type="text",
+              value= data.originalId,
+              class="form-control"
+            )
+          .form-group.col-3
+            label(for="isbn") ISBN
+            input(
+              id="isbn",
+              name="isbn",
+              type="text",
+              value= data.isbn,
+              class="form-control"
+            )
+          .form-group.col-2.text-right
+            label View
+            a(
+              href="book/" + data.originalId,
+              target="_blank"
+              class=`form-control btn btn-outline-secondary ${data.originalId ? '' : 'disabled'}`
+            )
+              i.fa.fa-eye
+
+        .form-group
+          label(for="title") Title
+          input(
+            id="title",
+            name="title",
+            type="text",
+            value=data.title,
+            class="form-control",
+            placeholder="Book Name"
+          )
+
+        .form-row
+          .form-group.col-12
+            label(for="slug") Slug
+            input(
+              id="slug",
+              name="slug",
+              type="text",
+              value=data.slug,
+              class="form-control",
+              placeholder="Slug"
+            )
+
+        //- Image
+        -if (data.id)
+          -if (entity === 'book')
+            .form-row
+              .form-group.col-6
+                label(for="img") Image
+                .input-group
+                  input(
+                    id="img",
+                    name="img",
+                    type="text",
+                    value= data.img,
+                    class="form-control",
+                    placeholder="Image"
+                  )
+                  .input-group-append
+                    button(
+                      type="button",
+                      class="btn btn-outline-secondary"
+                    )
+                      i(class= `fa fa-lg ${data.img ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-warning'}`)
+              .form-group.col-6
+                label Select file
+                .input-group
+                  .custom-file
+                    input(
+                      type="file",
+                      class="custom-file-input d-none",
+                      id="inputFileImg",
+                      data-btnupload="btnUploadImg",
+                    )
+                    label(
+                      class="custom-file-label",
+                      for="inputFileImg"
+                    ) Select
+                  .input-group-append
+                    button(
+                      id="btnUploadImg"
+                      class="btn btn-outline-secondary btn-upload",
+                      type="button",
+                      disabled=true,
+                      data-type="image",
+                      data-fileid="inputFileImg",
+                      data-input="img",
+                    ) Upload
+                small.form-text.text-muted Image size should be: 200 x 300 (px)
+          -else
+            .form-row
+              .form-group.col-12
+                label(for="img") Image
+                p.form-control
+                  a(href= data.img) Link img
+
+        //- Published Date
+        .form-row
+          .form-group.col-3
+            label(for="datePublished") Published Date
+            input(
+              id="datePublished",
+              name="datePublished",
+              type="text",
+              class="form-control",
+              placeholder="Published Date",
+              value= data.datePublished,
+            )
+
+      .col
+        .form-row
+          div(class= `form-group ${isModeratorRole ? 'col-9' : 'col-12'}`)
+            label(for="scraping-content") Scraping content
+            .input-group
+              input(
+                id="inputBookUrl",
+                type="text",
+                class="form-control",
+                placeholder="goodReads, Tiki",
+                value= data.originalUrl
+              )
+              .input-group-append
+                button(
+                  id="btnScraping",
+                  class="btn btn-outline-secondary",
+                  type="button",
+                  data-id="inputBookUrl",
+                  data-type= entity,
+                )
+                  i.fa.fa-cloud-download
+          //- Manage section
+          - if (isModeratorRole)
+            .form-group.col-3.justify-content-center
+              label Management
+              a.btn.btn-primary.form-control(
+                data-toggle="collapse",
+                href="#collapseExample",
+                role="button",
+                aria-expanded="false",
+                aria-controls="collapseExample"
+              )
+                i.fa.fa-cog.mr-2
+                | Manage
+
+        .form-row
+          .form-group.col-6
+            label(for="authorId") Author ID
+            .input-group
+              input(
+                id="authorId",
+                name="authorId",
+                type="text",
+                value= data.authorId ? data.authorId.id : authorId,
+                class="form-control",
+                placeholder="Author ID",
+                readonly
+              )
+              .input-group-append
+                //- When create data.authorId is object so compare undefined
+                a(
+                  href="author/" + `${data.authorId === undefined ? '' : data.authorId.id}`,
+                  target="_blank"
+                  class=`btn btn-outline-secondary ${data.authorId === undefined ? '' : 'disabled'}`
+                )
+                  i.fa.fa-eye
+              .input-group-append
+                button(
+                  id="btn-add-new-author"
+                  type="button",
+                  class=`btn btn-outline-secondary`
+                )
+                  i.fa.fa-plus.fa-lg
+
+          .form-group.col-6.position-relative
+            label(for="authorName") Author Name
+            input(
+              id="authorName",
+              name="authorName",
+              type="text",
+              value= data.authorId ? data.authorId.name : data.authorName,
+              placeholder="Atuhor Name",
+              class="form-control typeahead-input position-absolute",
+              style={'z-index': 2},
+              data-api="api/typeahead-author",
+              data-targetid="authorId",
+              data-targetdisplayid="authorName",
+              data-ddwrapperid="ddAuthor",
+              autocomplete="off"
+            )
+            div(class="dropdown position-absolute" style={'z-index': 1})
+              button(
+                class="invisible btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddAuthor",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select Author
+              div(id="ddAuthor-menu", class="dropdown-menu", aria-labelledby="ddAuthor")
+
+        .form-row
+          .form-group.col-4
+            label(for="numberOfPages") Number of Pages
+            input(
+              id="numberOfPages",
+              name="numberOfPages",
+              type="number",
+              class="form-control",
+              placeholder="Number of Pages",
+              value= data.numberOfPages
+            )
+
+          .form-group.col-4
+            label(for="language") Other Language
+            .dropdown
+              button(
+                class="btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddNormalLanguage",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select Language
+              div(id="ddNormalLanguage-menu", class="dropdown-menu", aria-labelledby="ddNormalLanguage")
+                //- List Other Language Option
+
+          .form-group.col-4
+            label(for="language") Most used Lang
+            .dropdown
+              button(
+                class="btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddLanguage",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select Language
+              div(id="ddLanguage-menu", class="dropdown-menu", aria-labelledby="ddLanguage")
+                //- List Most-used Language Option
+
+            input(
+              id="language",
+              name="language",
+              type="hidden",
+              class="form-control",
+              placeholder="Language",
+              value= data.language || 'English',
+            )
+
+        .form-row
+          #categories.form-group.col-4
+            label Categories:
+
+          .dropdown.col-4.text-right
+            button(
+              class="btn btn-secondary btn-sm dropdown-toggle",
+              type="button",
+              id="ddCategoryNonFiction",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false"
+            ) Fiction Category
+            div(id="ddCategoryNonFiction-menu", class="dropdown-menu", aria-labelledby="ddCategoryNonFiction")
+              //- List Fiction Category Option
+
+          .dropdown.col-4.text-right
+            button(
+              class="btn btn-secondary btn-sm dropdown-toggle",
+              type="button",
+              id="ddCategoryFiction",
+              data-toggle="dropdown",
+              aria-haspopup="true",
+              aria-expanded="false"
+            ) Non-Fiction Category
+            div(id="ddCategoryFiction-menu", class="dropdown-menu", aria-labelledby="ddCategoryFiction")
+              //- List Non-Fiction Category Option
+
+        .form-row.mb-3
+          span#list-category
+          //- Hidden inputs
+          each item, index in data.categoryIds || []
+            input(
+              value= item,
+              name= `categoryIds[${index}]`,
+              type="hidden",
+              class="form-control input-categoryId",
+              data-index= index,
+              placeholder="Category Id"
+            )
+
+        .form-group
+          label(for="seoTitle") SEO Title
+          input(
+            id="seoTitle",
+            name="seoTitle",
+            type="text",
+            value=data.seoTitle,
+            class="form-control",
+            placeholder="SEO Title"
+          )
+
+        .form-group
+          label(for="seoDesc") SEO Description
+          textarea(
+            id="seoDesc",
+            name="seoDesc",
+            rows="3"
+            class="form-control",
+            placeholder="SEO Description"
+          ) #{data.seoDesc}
+
+    //- Manage section, filter by account permission
+    include manager.pug
+
+    .row
+      .form-group.col-10
+        label(for="description") Description
+        textarea(
+          id="description",
+          name="description",
+          rows="6"
+          class="form-control",
+          placeholder="Description"
+        ) #{data.description}
+      .col-2
+        label Img Preview
+        div(
+          class="bg-danger rounded position-relative",
+          style={width: '150px', height: '225px'}
+        )
+          img(
+            id="imgPreview",
+            class="img-thumbnail position-relative",
+            style={'z-index': '2'},
+            src= data.img
+          )
+          div(
+            class="position-absolute text-center",
+            style={bottom: 0}
+          ) Img size not fit
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href="book/", class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts
+  include js.pug

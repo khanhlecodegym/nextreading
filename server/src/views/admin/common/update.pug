@@ -1,0 +1,146 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+  input(id="entity", type="hidden", value= entity)
+
+  form(
+    method="POST",
+    class="form-update",
+    action=`${entity}/${data.id ? 'update' : 'create'}`
+  )
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="id") ID
+            input(
+              id="id",
+              name="id",
+              type="text",
+              value= data.id,
+              class="form-control",
+              readonly
+            )
+
+          //- Special by entity type
+          - if (entity === 'category')
+            .form-group.col-5.text-right
+              - var isFictionCheck = false
+                - if (typeof data.isFiction !== "undefined" && data.isFiction === true)
+                  - isFictionCheck = true
+
+              label Category Type:
+              .btn-group
+                button(
+                  type="button",
+                  class=`btn ${isFictionCheck === false ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                  data-target="isFiction",
+                  data-value="0"
+                ) Nonfiction
+                button(
+                  type="button",
+                  class=`btn ${isFictionCheck === true ? 'btn-success' : 'btn-outline-secondary'} btn-state`,
+                  data-target="isFiction",
+                  data-value="1"
+                )
+                  i.fa.fa-check.mr-2
+                  | Fiction
+              input(
+                id="isFiction",
+                name="isFiction",
+                type="hidden",
+                value=`${isFictionCheck ? 1 : 0}`
+              )
+
+        .form-group
+          label(for="name") Name
+          input(
+            id="name",
+            name="name",
+            type="text",
+            value= data.name,
+            class="form-control",
+            placeholder="Name"
+          )
+
+        //- Special by entity type
+        - if (entity === 'category')
+          .form-group
+            label(for="vnName") Vietnamese Name
+            input(
+              id="vnName",
+              name="vnName",
+              type="text",
+              value= data.vnName,
+              class="form-control",
+              placeholder="Vietnamese Name"
+            )
+
+        .form-group
+          label(for="slug") Slug
+          input(
+            id="slug",
+            name="slug",
+            type="text",
+            value= data.slug,
+            class="form-control",
+            placeholder="Slug"
+          )
+
+      .col
+        .form-group
+          label(for="seoTitle") SEO Title
+          input(
+            id="seoTitle",
+            name="seoTitle",
+            type="text",
+            value= data.seoTitle,
+            class="form-control",
+            placeholder="SEO Title"
+          )
+
+        .form-group
+          label(for="seoDesc") SEO Description
+          textarea(
+            id="seoDesc",
+            name="seoDesc",
+            rows="2"
+            class="form-control",
+            placeholder="SEO Description"
+          ) #{data.seoDesc}
+
+    .row
+      .form-group.col
+        label(for="description") Description
+        textarea(
+          id="description",
+          name="description",
+          rows="6"
+          class="form-control",
+          placeholder="Description"
+        ) #{data.description}
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-toggle="modal",
+            data-target="#deleteConfirmModal",
+            data-id= data.id,
+            data-name= `${data.title || data.name}`
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts

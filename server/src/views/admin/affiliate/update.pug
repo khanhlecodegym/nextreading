@@ -1,0 +1,89 @@
+extends ../_default/base.pug
+
+block content
+  h1= title
+  input(id="entity", type="hidden", value= entity)
+
+  form(
+    method="POST",
+    class="form-update",
+    action=`${entity}/${data.id ? 'update' : 'create'}`
+  )
+    .row
+      .form-group.col-6
+        label(for="id") ID
+        input(
+          id="id",
+          name="id",
+          type="text",
+          value= data.id,
+          class="form-control",
+          readonly
+        )
+
+      .form-group.col-6
+        label(for="name") Book Name
+        .input-group
+          input(
+            id="name",
+            name="name",
+            type="text",
+            value= bookName,
+            class="form-control",
+            placeholder="Book Name",
+            readonly
+          )
+          .input-group-append
+            a(
+              class="input-group-text",
+              target="_blank",
+              href= `/admin/book/${bookId}`,
+            )
+              i.fa.fa-link
+
+    hr
+
+    .row
+      each field in inputFields
+        .form-group.col-6
+          label(for= field) #{field}
+          .input-group
+            input(
+              id= field,
+              name= field,
+              type="text",
+              value= data[field],
+              class="form-control",
+              placeholder= field
+            )
+            .input-group-append
+              a(
+                class="input-group-text",
+                target="_blank",
+                href= `/admin/book/${bookId}`,
+              )
+                i.fa.fa-link
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href=`${entity}/`, class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-toggle="modal",
+            data-target="#deleteConfirmModal",
+            data-id= data.id,
+            data-name= `${data.title || data.name}`
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit
+
+block scripts

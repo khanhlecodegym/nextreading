@@ -1,0 +1,12 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+
+  .row
+    each item in columns
+      .col-3
+        div(class=`card text-white mb-3 ${item.bgClass}`)
+          .card-header Total #{item.name}
+          .card-body
+            h5.card-title= data[item.field]

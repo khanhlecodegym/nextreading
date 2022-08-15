@@ -1,0 +1,152 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+
+  form(method="POST", id="userBadgeForm", action=`userbadge/${data.id ? 'update' : 'create'}`)
+
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="userBadgeId") Badge ID
+            .input-group
+              input(
+                id="badgeId",
+                name="badgeId",
+                type="text",
+                value= data.badgeId.id,
+                class="form-control",
+                placeholder="Badge ID",
+                readonly
+              )
+              .input-group-append
+                a(
+                  href="badge/" + data.badgeId.id,
+                  target="_blank"
+                  class=`btn btn-outline-secondary ${data.badgeId.id ? '' : 'disabled'}`
+                )
+                  i.fa.fa-eye
+          .form-group.col-5.position-relative
+            label(for="badgeName") Badge Name
+            input(
+              id="badgeName",
+              name="badgeName",
+              type="text",
+              value= data.badgeId.name,
+              placeholder="Badge Name",
+              class="form-control typeahead-input position-absolute",
+              style={'z-index': 2},
+              data-api="api/typeahead-badge",
+              data-targetid="badgeId",
+              data-targetdisplayid="badgeName",
+              data-ddwrapperid="ddBadge",
+              autocomplete="off"
+            )
+            div(class="dropdown position-absolute" style={'z-index': 1})
+              button(
+                class="invisible btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddBadge",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select Badge
+              div(id="ddBadge-menu", class="dropdown-menu", aria-labelledby="ddBadge")
+
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="userId") User ID
+            .input-group
+              input(
+                id="userId",
+                name="userId",
+                type="text",
+                value= data.userId.id,
+                class="form-control",
+                placeholder="User ID",
+                readonly
+              )
+              .input-group-append
+                a(
+                  href="user/" + data.userId.id,
+                  target="_blank"
+                  class=`btn btn-outline-secondary ${data.userId.id ? '' : 'disabled'}`
+                )
+                  i.fa.fa-eye
+          .form-group.col-5.position-relative
+            label(for="userEmail") User Email
+            input(
+              id="userEmail",
+              name="userEmail",
+              type="text",
+              value= data.userId.email,
+              placeholder="User Email",
+              class="form-control typeahead-input position-absolute",
+              style={'z-index': 2},
+              data-api="api/typeahead-user",
+              data-targetid="userId",
+              data-targetdisplayid="userEmail",
+              data-ddwrapperid="ddUser",
+              autocomplete="off"
+            )
+            div(class="dropdown position-absolute" style={'z-index': 1})
+              button(
+                class="invisible btn btn-secondary btn-block dropdown-toggle",
+                type="button",
+                id="ddUser",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              ) Select User
+              div(id="ddUser-menu", class="dropdown-menu", aria-labelledby="ddUser")
+
+    .row
+      .col
+        .form-row
+          .form-group.col-7
+            label(for="userBadgeId") User Badge ID
+            input(
+              id="userBadgeId",
+              name="id",
+              type="text",
+              value= data.id,
+              class="form-control",
+              readonly
+            )
+
+      .col
+        .form-row
+          .form-group.col-3
+            label(for="repeat") Repeat
+            input(
+              id="repeat",
+              name="repeat",
+              type="text",
+              value= data.repeat,
+              class="form-control",
+              placeholder="Repeat Value"
+            )
+
+    .row.mt-3
+      .col.d-flex.justify-content-between
+        a(href="userbadge/", class="btn btn-outline-secondary")
+          i.fa.fa-reply.fa-lg.mr-2
+          | Cancel
+
+        if data.id
+          button(
+            type="button",
+            class="btn btn-danger btn-delete ml-2",
+            data-id= data.id
+            data-name= data.title
+            data-toggle="modal",
+            data-target="#deleteConfirmModal"
+          )
+            i.fa.fa-trash-o.fa-lg.mr-2
+            | Delete
+
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-floppy-o.fa-lg.mr-2
+          | Submit

@@ -1,0 +1,110 @@
+extends ../_default/base.pug
+
+block main
+  .container
+    h1.heading.heading-page User Profile Setting
+    .row
+      form(method="POST").col-2
+        .form-group
+          label(for="username") Username
+          input(
+            id="username",
+            name="username",
+            type="text",
+            placeholder="Username"
+            class="form-control",
+            value= user.username
+          )
+          small.text-light At least&nbsp;
+            span#validate-username-min 6 characters&nbsp;
+            | including&nbsp;
+            span#validate-username-type a lowercase letter and a number only.
+          small.text-light#validate-username-duplicate
+            p &nbsp;
+
+        .form-group
+          label(for="name") Full name
+          input(
+            name="name",
+            type="text",
+            placeholder="Full name"
+            class="form-control",
+            value= user.name
+          )
+        .form-group
+          label(for="website") Website address
+          input(
+            name="website",
+            type="text",
+            placeholder="Website"
+            class="form-control",
+            value= user.website
+          )
+        .form-group
+          label(for="twitter") Twitter username
+          input(
+            name="twitter",
+            type="text",
+            placeholder="Twitter"
+            class="form-control",
+            value= user.twitter
+          )
+        .form-group
+          label(for="facebook") Facebook url
+          input(
+            name="facebook",
+            type="text",
+            placeholder="Facebook"
+            class="form-control",
+            value= user.facebook
+          )
+        .form-group
+          label(for="instagram") Instagram username
+          input(
+            name="instagram",
+            type="text",
+            placeholder="Instagram"
+            class="form-control",
+            value= user.instagram
+          )
+        .form-group
+          label(for="youtube") Youtube
+          input(
+            name="youtube",
+            type="text",
+            placeholder="Youtube"
+            class="form-control",
+            value= user.youtube
+          )
+        button(
+          type="submit",
+          class="form-control btn btn-primary margin-auto"
+        ) Save User Profile
+
+      .col-2.text-center
+        -var defaultUserImg = '/img/placeholder-user.svg'
+        .form-group
+          label(for="avatar") Upload new Avatar
+        .form-group
+          input(
+            id="userAvatarInput",
+            name="image",
+            type="file",
+            accept="image/*",
+            placeholder="Avatar"
+            value= user.image
+          )
+        img(
+          id="previewAvatar",
+          src= `${user.img || defaultUserImg}`,
+          class="img img-user",
+        )
+        button(
+          type="button",
+          id="uploadAvatarBtn",
+          class="form-control btn margin-auto",
+          data-id= user.id,
+          data-entity="user",
+          data-fileid="userAvatarInput",
+          disabled
+        ) Upload New Avatar

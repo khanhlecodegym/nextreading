@@ -1,0 +1,24 @@
+mixin categoryTemplate(isAmp=false)
+  -var defaultCategoryImg = '/img/placeholder-author.svg'
+  -var defaultBookImg = '/img/placeholder-book.svg'
+
+  .container.page
+    .page-sidebar.sidebar.text-center
+      +imageTemplate(
+        `${categoryimg || defaultCategoryImg}`,
+        'img img-cover', categoryname, '200', '300', isAmp,
+      )
+
+    .page-content
+      h1.heading.heading-page= category.name
+      - if (category.description)
+        p= category.description
+
+      h2.heading.heading-section.border-btm= `${category.name}'s Books`
+      .list-book.list-book-author
+        each item in books
+          a(href=`/book/${item.slug}`, title= item.title)
+            +imageTemplate(
+              `${item.img || defaultBookImg}`,
+              'img img-list', item.title, '160', '256', isAmp,
+            )

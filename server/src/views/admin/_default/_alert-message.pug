@@ -1,0 +1,7 @@
+//- Alert message (aka flash message)
+- if (message) {
+  div(
+    class=`alert ${success ? 'alert-success' : ''} ${error ? 'alert-danger' : '' }`,
+    role="alert"
+  ) #{message}
+-}

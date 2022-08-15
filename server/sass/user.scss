@@ -1,0 +1,127 @@
+// Styles for logged users, not guest
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+.text-tiny {
+  font-size: 14px;
+}
+.btn-auth {
+  padding: 10px 30px;
+}
+
+.menu-item-auth {
+  margin-left: 10px;
+  padding-left: 10px;
+
+  @media screen and (max-width: 769px) {
+    border-left: none;
+  }
+}
+
+/* Basic grid styles */
+.row {
+  @media screen and (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.col-2 {
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    width: calc(100% / 2 - 20px);
+  }
+}
+
+/* Form styles */
+label {
+  display: inline-block;
+  margin-bottom: .5rem;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-control {
+  display: block;
+  outline: none;
+  width: 100%;
+  padding: .6rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+
+  &-success {
+    border-color: #48A868;
+  }
+
+  &-error {
+    border-color: #F63D48;
+  }
+
+  &-textarea {
+    height: auto;
+    resize: vertical;
+  }
+}
+
+.form-control.btn-primary {
+  color: white;
+  font-family: inherit;
+  margin: 1rem 0;
+}
+
+.mr-06 {
+  margin-right: .6rem;
+}
+
+.divider {
+  display: block;
+  height: 1px;
+  width: 100%;
+  border-top: 1px solid #ced4da;
+}
+.divider-text {
+  margin: 1rem;
+}
+
+.margin-auto {
+  margin: 0 auto;
+}
+
+/* Date picker input*/
+.input-placeholder {
+  background-color: transparent;
+  padding: 2px 5px;
+  margin-left: 3px;
+  border-radius: 2px;
+  border: none;
+  max-width: 100px;
+  cursor: pointer;
+  font-size: 1rem;
+  outline: none;
+}
+.input-placeholder:hover {
+  background: #ddd;
+}
+
+/* Rich text Editor */
+.editor-wrapper {
+  margin: -21px -10px 0;
+
+  @media screen and (min-width: 768px) {
+    margin: -21px -20px 0;
+  }
+}
+
+.tox-tinymce {
+  min-height: 400px;
+
+  @media screen and (min-width: 768px) {
+    min-height: 500px;
+  }
+}

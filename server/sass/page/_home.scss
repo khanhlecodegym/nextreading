@@ -1,0 +1,94 @@
+// HomePage section
+.home {
+  &-cover {
+    text-align: center;
+    position: relative;
+
+    @media screen and (max-width: $tablet) {
+      padding-top: 10px;
+      padding-bottom: 110px;
+    }
+    @media screen and (min-width: $tablet) {
+      padding-top: 20px;
+      padding-bottom: 240px;
+    }
+
+    &-desc {
+      margin: $space-small auto;
+    }
+  }
+
+  &-hero {
+    position: absolute;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    transform: scaleX(-1);
+
+    @media screen and (max-width: $tablet) {
+      width: 150px;
+      height: 150px;
+    }
+    @media screen and (min-width: $tablet) {
+      width: 300px;
+      height: 300px;
+    }
+
+    &-left {
+      background-image: url('/img/reading-walk.svg');
+      left: 0;
+    }
+
+    &-right {
+      background-image: url('/img/reading-time.svg');
+      right: 0;
+    }
+  }
+
+  &-section {
+    padding: $space-large 0;
+    background: var(--section-bg-color);
+
+    &-placeholder {
+      // To clear image border
+      margin-top: -1px;
+      padding-top: 1px;
+      background: var(--body-bg-color);
+      position: relative;
+    }
+  }
+
+  &-card {
+    @media screen and (min-width: $desktop) {
+      max-width: 300px;
+    }
+
+    &:nth-child(2) {
+      @media screen and (max-width: $tablet) {
+        margin: $space-normal 0;
+      }
+
+      @media screen and (min-width: $tablet) {
+        margin: 0 $space-normal $space-normal;
+      }
+    }
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06),0 2px 6px rgba(0,0,0,0.06),0 3px 8px rgba(0,0,0,0.09);
+
+    &:hover {
+      box-shadow: 0 1px 4px rgba(0,0,0,0.09),0 3px 8px rgba(0,0,0,0.09),0 4px 13px rgba(0,0,0,0.13);
+    }
+
+    &-img {
+      width: 100%;
+    }
+  }
+
+  // Override styles helper class on mobile
+  &-flex-mobile {
+    @media screen and (max-width: $tablet) {
+      flex-direction: column;
+    }
+  }
+}

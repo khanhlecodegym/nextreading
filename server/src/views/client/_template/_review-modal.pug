@@ -1,0 +1,32 @@
+#modalReview.modal.hidden
+  .modal-content.card
+    .flex.flex-default.modal-header
+      div
+        p.text-small.text-light.m0 Tell us your feelings about
+        h2.heading.heading-section #{title}
+        div.flex
+          +ratingActionTemplate(_id, true)
+      svg(
+        class="icon text-light btn btn-action",
+        fill="currentColor",
+        data-name="modal",
+        data-id="modalReview",
+      )
+        use(xlink:href="#icon-close")
+    .editor-wrapper
+      #editor-container
+    small.form-text.text-light.form-group Minimum 500 characters
+    .flex.flex-between
+      span(
+        class="btn btn-action",
+        data-name="modal",
+        data-id="modalReview",
+      ) Cancel
+      input(id="inputReviewId", type="hidden")
+      button(
+        id="btnSubmitReview",
+        type="button",
+        class="btn btn-login btn-primary btn-disabled",
+        data-id= _id,
+        disabled,
+      ) Submit

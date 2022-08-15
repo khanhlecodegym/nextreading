@@ -1,0 +1,30 @@
+script(type="application/ld+json").
+  {
+    "@context": "http://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "Book",
+      "bookFormat": "http://schema.org/Paperback",
+      "image": "#{metaPageImage}",
+      "name": "#{title}",
+      "numberOfPages": "#{numberOfPages || 120}",
+      "inLanguage": "#{language || 'English'}",
+      "isbn": "#{isbn}",
+      "datePublished": "#{datePublished}",
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "#{ratingAVG || 3}",
+    },
+    "name": "#{title} review by #{review.userId.name || review.userId.username}",
+    "author": {
+      "@type": "Person",
+      "name": "#{review.userId.name || review.userId.username}",
+      "url": "#{BASE_URL}/user/#{review.userId.username}"
+    },
+    "reviewBody": "!{review.content}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "NextReading"
+    }
+  }

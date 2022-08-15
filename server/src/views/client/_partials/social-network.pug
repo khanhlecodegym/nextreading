@@ -1,0 +1,33 @@
+mixin socialNetworkTemplate(twitter, facebook, instagram, youtube)
+  -if (twitter)
+    a(
+      href= `https://twitter.com/${twitter}`,
+      title= `Twitter Profile`,
+      target="_blank",
+      rel="nofollow",
+    )
+      +imageTemplate('/img/logo-tw.svg', 'icon-menu', 'Twitter', '32', '32', isAmp)
+  -if (facebook)
+    a(
+      href= facebook,
+      title= `Facebook Profile`,
+      target="_blank",
+      rel="nofollow",
+    )
+      +imageTemplate('/img/logo-fb.svg', 'icon-menu', 'Facebook', '32', '32', isAmp)
+  -if (instagram)
+    a(
+      href= `https://www.instagram.com/${instagram}`,
+      title= `Instagram Profile`,
+      target="_blank",
+      rel="nofollow",
+    )
+      +imageTemplate('/img/logo-ig.svg', 'icon-menu', 'Instagram', '32', '32', isAmp)
+  -if (youtube)
+    a(
+      href= youtube,
+      title= `Youtube Profile`,
+      target="_blank",
+      rel="nofollow",
+    )
+      +imageTemplate('/img/logo-ytb.svg', 'icon-menu', 'Youtube', '32', '32', isAmp)

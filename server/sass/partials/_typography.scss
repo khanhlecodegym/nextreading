@@ -1,0 +1,67 @@
+$size-1: 4rem;
+$size-2: 3rem;
+$size-3: 1.5rem;
+$size-4: 1rem;
+$size-5: 0.9rem;
+
+.heading {
+  margin: 0;
+  font-weight: $font-weight-bold;
+
+  // Big Header like Homepage cover, Page Title
+  &-extra {
+    line-height: 1;
+    font-size: $size-1;
+    font-weight: $font-weight-bold-super;
+  }
+
+  // Heading on common pages
+  &-page {
+    line-height: 1;
+    font-size: $size-2;
+    font-weight: $font-weight-bold-light;
+  }
+
+  &-section {
+    font-size: $size-3;
+  }
+
+  // Widget title
+  &-item {
+    font-size: $size-4;
+  }
+}
+
+.text {
+  &-center {
+    text-align: center;
+  }
+
+  &-small {
+    font-size: $size-5;
+  }
+
+  &-primary {
+    color: var(--primary-color);
+  }
+  &-success {
+    color: var(--success-color);
+  }
+  &-error {
+    color: var(--error-color);
+  }
+
+  &-link {
+    color: var(--link-color);
+  }
+
+  &-light {
+    color: var(--text-secondary-color);
+  }
+
+  &-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

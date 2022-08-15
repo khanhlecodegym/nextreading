@@ -1,0 +1,92 @@
+extends ../_default/base.pug
+
+block content
+  h3= title
+
+  .row
+    //- Report Type & Period
+    .col-9
+      .row
+        .col-2
+          //- .dropdown
+          //-   button.btn.btn-secondary.dropdown-toggle(
+          //-     type="button",
+          //-     id="dropdownTypeBtn",
+          //-     data-toggle="dropdown",
+          //-     aria-haspopup="true",
+          //-     aria-expanded="false"
+          //-   )
+          //-     | #{type || 'Select Type'}
+          //-   .dropdown-menu(aria-labelledby="dropdownTypeBtn")
+          //-     btn.dropdown-item.btn-select-type(type="button", data-type="book") Book
+          //-     btn.dropdown-item.btn-select-type(type="button", data-type="user") User
+          //-     btn.dropdown-item.btn-select-type(type="button", data-type="review") Review
+          input(id="selectedType", value= type, type="hidden")
+
+        .col-7
+          .input-group
+            .input-group-prepend
+              span.input-group-text Period
+            input.form-control(
+              id="startDate",
+              type="text",
+              placeholder="From Date",
+              value= startDate
+            )
+            input.form-control(
+              id="endDate",
+              type="text",
+              placeholder="To Date",
+              value= endDate
+            )
+
+        //- Apply btn
+        .col-3
+          btn#btnApply(
+            href=`report?type=${type}`,
+            class=`btn btn-success`
+          )
+            i.fa.fa-check.mr-2
+            | Apply
+
+    //- Pagination
+    .col-3.text-right
+      nav(aria-label="Page navigation example", class="text-center")
+        - var pagination = page || 1
+        - var paginationLink = 'report'
+
+        ul.pagination
+          li(class=`page-item ${page === 1 ? 'disabled' : ''}`)
+            a(
+              class="page-link",
+              href=`${paginationLink}?page=${+(pagination - 1)}&type=${type}&startDate=${startDate}&endDate=${endDate}`
+            ) Previous
+          li.page-item.active
+            a(class="page-link", href="javascript:;")= pagination
+          li(class=`page-item ${lastId === '' ? 'disabled' : ''}`)
+            a(
+              class="page-link",
+              href=`${paginationLink}?page=${+(pagination + 1)}&type=${type}&startDate=${startDate}&endDate=${endDate}`
+            ) Next
+
+  .row
+    .col
+      table.table.table-hover.table-bordered.table-responsive-md
+        thead
+          tr
+            th #
+            th Book
+            th Created At
+            th Created By
+        tbody
+          each item, tableIdx in data
+            tr(id=`row-id-${item.id}`)
+              td= tableIdx + 1
+              td
+                a(href= `/admin${item.id}`, target="_blank")= item.slug
+              td= item.createdAt
+              td
+                a(href= `/admin/report/user/${item.userId}`, target="_blank")= item.email
+
+block scripts
+  include _js.pug

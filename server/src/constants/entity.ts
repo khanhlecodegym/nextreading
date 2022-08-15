@@ -1,0 +1,15 @@
+export enum ENTITY {
+  BOOK = 'book',
+  REVIEW = 'review',
+  AUTHOR = 'author',
+  CATEGORY = 'category',
+  USER = 'user',
+  BADGE = 'badge',
+  USER_BADGE = 'userBadge',
+  VOTE = 'vote',
+  RATING = 'rating',
+  USER_ACTIVITY = 'user-activity',
+  AFFILIATE = 'affiliate',
+  SCRAPING_URL = 'scraping-url',
+  SCRAPING_CONTENT = 'scraping-content',
+}
